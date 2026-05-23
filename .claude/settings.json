@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Read(//home/cvega/Descargas/RISA\\\\ Multiservicios-handoff/risa-multiservicios/**)",
+      "Read(//home/cvega/Descargas/RISA\\\\ Multiservicios-handoff/risa-multiservicios/project/**)",
+      "Bash(cp -r \"/home/cvega/Descargas/RISA Multiservicios-handoff/risa-multiservicios/project\"/* /home/cvega/Documentos/Projects/RISA/)",
+      "Bash(gh auth *)"
+    ]
+  }
+}
