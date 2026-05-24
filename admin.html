@@ -22,38 +22,49 @@
 
     .admin-section h3 {
       font-weight: 900;
-      font-size: 22px;
-      margin: 0 0 24px;
+      font-size: 24px;
+      margin: 0 0 28px;
       color: var(--navy-900);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      letter-spacing: -0.01em;
     }
 
     .admin-section h3::before {
       content: '';
-      width: 4px;
-      height: 24px;
-      background: var(--yellow-500);
-      border-radius: 2px;
+      width: 5px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
+      border-radius: 3px;
+      flex-shrink: 0;
     }
 
-    /* Login Section */
+    /* Login Section - Moderno */
     .login-box {
-      max-width: 400px;
-      margin: 0 auto;
-      background: var(--navy-900);
+      max-width: 420px;
+      margin: 80px auto;
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
       color: var(--white);
-      padding: 40px;
-      border-radius: 14px;
-      box-shadow: var(--shadow-lg);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(15, 30, 74, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .login-box h2 {
-      margin: 0 0 32px;
+      margin: 0 0 8px;
       text-align: center;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .login-box > p:first-of-type {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 0 0 32px;
+      font-size: 14px;
     }
 
     .login-field {
@@ -62,93 +73,103 @@
 
     .login-field label {
       display: block;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 13px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--yellow-500);
-      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 10px;
     }
 
     .login-field input {
       width: 100%;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
+      padding: 16px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
       color: var(--white);
-      border-radius: 8px;
+      border-radius: 12px;
       font-family: inherit;
       font-size: 15px;
+      font-weight: 500;
+      transition: all 200ms;
     }
 
     .login-field input::placeholder {
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.4);
     }
 
     .login-field input:focus {
       outline: none;
       border-color: var(--yellow-500);
-      background: rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
     }
 
     .login-btn {
       width: 100%;
-      padding: 14px;
-      background: var(--yellow-500);
+      padding: 16px;
+      background: linear-gradient(135deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
       color: var(--ink);
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 800;
       font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       cursor: pointer;
-      transition: background 150ms;
+      transition: all 200ms;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+      margin-top: 8px;
     }
 
     .login-btn:hover {
-      background: var(--yellow-600);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
     }
 
     .login-btn:active {
-      transform: scale(0.98);
+      transform: translateY(0);
     }
 
-    /* Config Tabs */
+    /* Config Tabs - Moderno */
     .admin-tabs {
       display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      border-bottom: 2px solid var(--concrete-200);
+      gap: 8px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--concrete-200);
       overflow-x: auto;
+      padding-bottom: 0;
     }
 
     .admin-tab {
-      padding: 12px 16px;
+      padding: 14px 20px;
       background: none;
       border: none;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 13px;
       color: var(--concrete-700);
       cursor: pointer;
       transition: all 150ms;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
+      margin-bottom: -1px;
       white-space: nowrap;
+      position: relative;
+    }
+
+    .admin-tab:hover {
+      color: var(--navy-900);
+      background: rgba(251, 191, 36, 0.05);
     }
 
     .admin-tab.active {
       color: var(--navy-900);
       border-bottom-color: var(--yellow-500);
+      font-weight: 700;
     }
 
-    .admin-tab:hover {
-      color: var(--navy-900);
-    }
-
-    /* Material Table */
+    /* Material Table - Moderno */
     .material-table {
       width: 100%;
       border-collapse: collapse;
@@ -156,54 +177,68 @@
     }
 
     .material-table thead {
-      background: var(--navy-50);
+      background: linear-gradient(135deg, var(--navy-50) 0%, var(--navy-50) 100%);
     }
 
     .material-table th {
-      padding: 14px;
+      padding: 18px 16px;
       text-align: left;
       font-weight: 700;
       font-size: 12px;
       color: var(--navy-900);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       border-bottom: 2px solid var(--concrete-200);
     }
 
     .material-table td {
-      padding: 14px;
-      border-bottom: 1px solid var(--concrete-200);
+      padding: 18px 16px;
+      border-bottom: 1px solid var(--concrete-100);
       font-size: 14px;
     }
 
-    .material-table tr:hover {
-      background: rgba(251, 191, 36, 0.05);
+    .material-table tbody tr {
+      transition: all 150ms;
+    }
+
+    .material-table tbody tr:hover {
+      background: rgba(251, 191, 36, 0.08);
     }
 
     .material-table input {
       width: 100%;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border: 1.5px solid var(--concrete-200);
-      border-radius: 6px;
-      font-size: 13px;
+      border-radius: 8px;
+      font-size: 14px;
       font-family: inherit;
       font-weight: 500;
+      background: var(--white);
+      color: var(--ink);
+      transition: all 150ms;
     }
 
     .material-table input:focus {
       outline: none;
       border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
       background: var(--white);
     }
 
+    .material-table input::placeholder {
+      color: var(--concrete-700);
+    }
+
     .material-name {
-      font-weight: 600;
+      font-weight: 700;
       color: var(--navy-900);
+      font-size: 14px;
     }
 
     .material-unit {
       color: var(--concrete-700);
       font-weight: 500;
+      font-size: 13px;
     }
 
     /* Content Tabs */
@@ -215,75 +250,87 @@
       display: block;
     }
 
-    /* Buttons */
+    /* Buttons - Moderno */
     .admin-buttons {
       display: flex;
       gap: 12px;
       margin-top: 32px;
-      padding-top: 24px;
+      padding-top: 32px;
       border-top: 1px solid var(--concrete-200);
       flex-wrap: wrap;
     }
 
     .admin-btn {
-      padding: 12px 20px;
+      padding: 14px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 700;
       font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       cursor: pointer;
-      transition: all 150ms;
+      transition: all 200ms;
       flex: 1;
       min-width: 140px;
+      font-family: inherit;
     }
 
     .btn-save {
-      background: var(--yellow-500);
+      background: linear-gradient(135deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
       color: var(--ink);
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.25);
     }
 
     .btn-save:hover {
-      background: var(--yellow-600);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.35);
     }
 
     .btn-export {
-      background: var(--navy-700);
+      background: linear-gradient(135deg, var(--navy-700) 0%, var(--navy-900) 100%);
       color: var(--white);
+      box-shadow: 0 4px 15px rgba(15, 30, 74, 0.2);
     }
 
     .btn-export:hover {
-      background: var(--navy-900);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 30, 74, 0.3);
     }
 
     .btn-reset {
       background: var(--concrete-200);
       color: var(--ink);
+      border: 1px solid var(--concrete-300);
     }
 
     .btn-reset:hover {
       background: var(--concrete-300);
+      transform: translateY(-1px);
     }
 
     .btn-logout {
       background: var(--danger);
       color: var(--white);
+      box-shadow: 0 4px 15px rgba(220, 38, 38, 0.25);
     }
 
     .btn-logout:hover {
-      background: #c41c1c;
+      background: #b91c1c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.35);
     }
 
     .logout-zone {
       display: flex;
       justify-content: flex-end;
+      margin-bottom: 24px;
     }
 
     .info-box {
-      background: #fef3c7;
+      background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
       border-left: 4px solid #f59e0b;
-      padding: 14px;
+      border-radius: 8px;
+      padding: 16px 20px;
       border-radius: 6px;
       font-size: 13px;
       color: #92400e;
