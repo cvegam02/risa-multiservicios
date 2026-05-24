@@ -161,17 +161,17 @@ function renderServicesTab() {
   if (!sidebar || !details) return;
 
   // Render sidebar
-  let sidebarHtml = '<div style="margin-bottom: 16px;">';
+  let sidebarHtml = `<div class="flex flex-col gap-16">`;
   Object.entries(servicios).forEach(([key, service]) => {
-    const isActive = key === currentServiceKey ? 'var(--navy-900)' : 'var(--ink)';
-    const bgColor = key === currentServiceKey ? 'var(--concrete-50)' : 'transparent';
+    const isActive = key === currentServiceKey ? 'active' : '';
     sidebarHtml += `
-      <div onclick="selectService('${key}')" style="padding: 12px; background: ${bgColor}; color: ${isActive}; cursor: pointer; border-radius: 8px; margin-bottom: 8px; border: 1px solid ${key === currentServiceKey ? 'var(--navy-700)' : 'transparent'}; font-weight: 600;">
+      <div onclick="selectService('${escapeHtml(key)}')" class="service-item ${isActive}">
         ${escapeHtml(service.nombre)}
       </div>
     `;
   });
-  sidebarHtml += '</div><button onclick="addServiceModal()" style="width: 100%; padding: 12px; background: var(--yellow-500); color: var(--ink); border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">+ Nuevo Servicio</button>';
+  sidebarHtml += `</div>
+    <button onclick="addServiceModal()" class="btn-success w-full" style="margin-top: 16px;">+ Nuevo Servicio</button>`;
   sidebar.innerHTML = sidebarHtml;
 
   // Render details
@@ -182,23 +182,25 @@ function renderServicesTab() {
 
   const service = servicios[currentServiceKey];
   let detailsHtml = `
-    <h4 style="font-size: 20px; font-weight: 900; margin: 0 0 16px; color: var(--navy-900);">${escapeHtml(service.nombre)}</h4>
-    <p style="color: var(--concrete-700); margin: 0 0 16px; font-size: 14px;">${escapeHtml(service.descripcion)}</p>
+    <div class="flex flex-col gap-20">
+      <h4 style="font-size: 20px; font-weight: 900; margin: 0; color: var(--navy-900);">${escapeHtml(service.nombre)}</h4>
+      <p style="color: var(--concrete-700); margin: 0; font-size: 14px;">${escapeHtml(service.descripcion)}</p>
 
-    <div style="margin-bottom: 16px; padding: 12px; background: var(--concrete-50); border-radius: 8px;">
-      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-        <input type="checkbox" ${service.medible ? 'checked' : ''} onchange="toggleMedible('${currentServiceKey}')" style="width: 18px; height: 18px;">
-        <span style="font-weight: 600;">¿Es medible? (se puede calcular por m²)</span>
-      </label>
-    </div>
+      <div style="margin: 0; padding: 12px; background: var(--concrete-50); border-radius: 8px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" ${service.medible ? 'checked' : ''} onchange="toggleMedible('${escapeHtml(currentServiceKey)}')" style="width: 18px; height: 18px;">
+          <span style="font-weight: 600;">¿Es medible? (se puede calcular por m²)</span>
+        </label>
+      </div>
 
-    <h5 style="font-weight: 700; margin: 24px 0 16px; color: var(--navy-900);">Materiales utilizados:</h5>
+      <div>
+        <h5 style="font-weight: 700; margin: 0 0 16px; color: var(--navy-900);">Materiales utilizados:</h5>
   `;
 
   if (Object.keys(service.materiales).length === 0) {
     detailsHtml += '<p style="color: var(--concrete-700); font-size: 14px;">Sin materiales asignados</p>';
   } else {
-    detailsHtml += '<div style="display: flex; flex-direction: column; gap: 12px;">';
+    detailsHtml += '<div class="flex flex-col gap-12">';
     Object.entries(service.materiales).forEach(([matKey, matQty]) => {
       const mat = materiales[matKey];
       if (!mat) return;
@@ -206,14 +208,14 @@ function renderServicesTab() {
       const totalPrice = mat.precio_unitario;
       detailsHtml += `
         <div style="padding: 12px; background: var(--concrete-50); border-left: 3px solid var(--yellow-500); border-radius: 6px;">
-          <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div class="flex-between">
             <div>
               <div style="font-weight: 700; color: var(--navy-900); margin-bottom: 6px;">${escapeHtml(mat.nombre)}</div>
               <div style="font-size: 13px; color: var(--concrete-700);">
                 ${matQty.cantidad_por_m2} ${escapeHtml(mat.unidad)}/m² • $${totalPrice.toFixed(2)}/${escapeHtml(mat.unidad)}
               </div>
             </div>
-            <button onclick="removeMaterialFromService('${currentServiceKey}', '${matKey}')" style="padding: 6px 12px; background: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">Quitar</button>
+            <button onclick="removeMaterialFromService('${escapeHtml(currentServiceKey)}', '${escapeHtml(matKey)}')" class="btn-danger">Quitar</button>
           </div>
         </div>
       `;
@@ -221,7 +223,11 @@ function renderServicesTab() {
     detailsHtml += '</div>';
   }
 
-  detailsHtml += `<button onclick="addMaterialToServiceModal('${currentServiceKey}')" style="margin-top: 16px; padding: 12px 20px; background: var(--navy-700); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">+ Agregar Material</button>`;
+  detailsHtml += `
+      </div>
+      <button onclick="addMaterialToServiceModal('${escapeHtml(currentServiceKey)}')" class="btn-primary w-full">+ Agregar Material</button>
+    </div>
+  `;
 
   details.innerHTML = detailsHtml;
 }
