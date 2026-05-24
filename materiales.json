@@ -1,196 +1,193 @@
 {
+  "materiales": {
+    "pega_azulejos": {
+      "nombre": "Pega azulejos",
+      "unidad": "kg",
+      "precio_unitario": 150
+    },
+    "arena_fina": {
+      "nombre": "Arena fina",
+      "unidad": "kg",
+      "precio_unitario": 80
+    },
+    "arena_gruesa": {
+      "nombre": "Arena gruesa",
+      "unidad": "kg",
+      "precio_unitario": 80
+    },
+    "cemento_gris": {
+      "nombre": "Cemento gris",
+      "unidad": "kg",
+      "precio_unitario": 120
+    },
+    "lechada": {
+      "nombre": "Lechada / Grout",
+      "unidad": "kg",
+      "precio_unitario": 180
+    },
+    "grava": {
+      "nombre": "Grava o piedra",
+      "unidad": "kg",
+      "precio_unitario": 100
+    },
+    "agua": {
+      "nombre": "Agua",
+      "unidad": "litros",
+      "precio_unitario": 10
+    },
+    "pintura_latex": {
+      "nombre": "Pintura látex",
+      "unidad": "litros",
+      "precio_unitario": 800
+    },
+    "thinner": {
+      "nombre": "Thinner",
+      "unidad": "litros",
+      "precio_unitario": 600
+    },
+    "masilla_pintura": {
+      "nombre": "Masilla / Resane",
+      "unidad": "kg",
+      "precio_unitario": 200
+    },
+    "lija": {
+      "nombre": "Lija / Lija adhesiva",
+      "unidad": "pliegos",
+      "precio_unitario": 50
+    },
+    "placa_tablaroca": {
+      "nombre": "Placa de tablaroca (1.22 x 2.44 m)",
+      "unidad": "piezas",
+      "precio_unitario": 280
+    },
+    "pegamento_tablaroca": {
+      "nombre": "Pegamento para tablaroca",
+      "unidad": "kg",
+      "precio_unitario": 150
+    },
+    "tornillos_tablaroca": {
+      "nombre": "Tornillos para tablaroca (1 1/4\")",
+      "unidad": "piezas",
+      "precio_unitario": 2
+    },
+    "cinta_papel": {
+      "nombre": "Cinta de papel para juntas",
+      "unidad": "metros",
+      "precio_unitario": 15
+    },
+    "masilla_juntas": {
+      "nombre": "Masilla para juntas",
+      "unidad": "kg",
+      "precio_unitario": 180
+    },
+    "impermeabilizante": {
+      "nombre": "Impermeabilizante líquido",
+      "unidad": "litros",
+      "precio_unitario": 500
+    },
+    "primer": {
+      "nombre": "Primer / Sellador",
+      "unidad": "litros",
+      "precio_unitario": 400
+    },
+    "aditivo_impermeabilizante": {
+      "nombre": "Aditivo impermeabilizante",
+      "unidad": "kg",
+      "precio_unitario": 300
+    },
+    "tela_asfaltica": {
+      "nombre": "Tela asfáltica",
+      "unidad": "m2",
+      "precio_unitario": 600
+    },
+    "tuberia_pvc": {
+      "nombre": "Tubería PVC 3/4\"",
+      "unidad": "metros",
+      "precio_unitario": 80
+    },
+    "codos_pvc": {
+      "nombre": "Codos PVC 3/4\"",
+      "unidad": "piezas",
+      "precio_unitario": 25
+    },
+    "uniones_pvc": {
+      "nombre": "Uniones / Acoples",
+      "unidad": "piezas",
+      "precio_unitario": 30
+    },
+    "pegamento_pvc": {
+      "nombre": "Pegamento PVC",
+      "unidad": "litros",
+      "precio_unitario": 250
+    },
+    "teflon": {
+      "nombre": "Cinta teflón",
+      "unidad": "rollos",
+      "precio_unitario": 40
+    }
+  },
   "servicios": {
     "vitropiso": {
       "nombre": "Vitropiso / Azulejos",
       "descripcion": "Colocación de azulejos y vitropiso",
+      "medible": true,
       "materiales": {
-        "pegaaulejos": {
-          "nombre": "Pega azulejos",
-          "cantidad_por_m2": 1.5,
-          "unidad": "kg",
-          "precio_unitario": 150
-        },
-        "arena": {
-          "nombre": "Arena fina",
-          "cantidad_por_m2": 0.8,
-          "unidad": "kg",
-          "precio_unitario": 80
-        },
-        "cemento": {
-          "nombre": "Cemento gris",
-          "cantidad_por_m2": 0.5,
-          "unidad": "kg",
-          "precio_unitario": 120
-        },
-        "lechada": {
-          "nombre": "Lechada / Grout",
-          "cantidad_por_m2": 0.3,
-          "unidad": "kg",
-          "precio_unitario": 180
-        }
+        "pega_azulejos": { "cantidad_por_m2": 1.5 },
+        "arena_fina": { "cantidad_por_m2": 0.8 },
+        "cemento_gris": { "cantidad_por_m2": 0.5 },
+        "lechada": { "cantidad_por_m2": 0.3 }
       }
     },
     "cementado": {
       "nombre": "Cementado / Piso de concreto",
       "descripcion": "Preparación e instalación de pisos de cemento",
+      "medible": true,
       "materiales": {
-        "arena": {
-          "nombre": "Arena gruesa",
-          "cantidad_por_m2": 40,
-          "unidad": "kg",
-          "precio_unitario": 80
-        },
-        "grava": {
-          "nombre": "Grava o piedra",
-          "cantidad_por_m2": 60,
-          "unidad": "kg",
-          "precio_unitario": 100
-        },
-        "cemento": {
-          "nombre": "Cemento gris",
-          "cantidad_por_m2": 25,
-          "unidad": "kg",
-          "precio_unitario": 120
-        },
-        "agua": {
-          "nombre": "Agua",
-          "cantidad_por_m2": 20,
-          "unidad": "litros",
-          "precio_unitario": 10
-        }
+        "arena_gruesa": { "cantidad_por_m2": 40 },
+        "grava": { "cantidad_por_m2": 60 },
+        "cemento_gris": { "cantidad_por_m2": 25 },
+        "agua": { "cantidad_por_m2": 20 }
       }
     },
     "pintura": {
       "nombre": "Pintura residencial",
       "descripcion": "Pintura de interiores y exteriores",
+      "medible": true,
       "materiales": {
-        "pintura": {
-          "nombre": "Pintura látex",
-          "cantidad_por_m2": 0.12,
-          "unidad": "litros",
-          "precio_unitario": 800
-        },
-        "thinner": {
-          "nombre": "Thinner",
-          "cantidad_por_m2": 0.02,
-          "unidad": "litros",
-          "precio_unitario": 600
-        },
-        "masilla": {
-          "nombre": "Masilla / Resane",
-          "cantidad_por_m2": 0.1,
-          "unidad": "kg",
-          "precio_unitario": 200
-        },
-        "lija": {
-          "nombre": "Lija / Lija adhesiva",
-          "cantidad_por_m2": 0.02,
-          "unidad": "pliegos",
-          "precio_unitario": 50
-        }
+        "pintura_latex": { "cantidad_por_m2": 0.12 },
+        "thinner": { "cantidad_por_m2": 0.02 },
+        "masilla_pintura": { "cantidad_por_m2": 0.1 },
+        "lija": { "cantidad_por_m2": 0.02 }
       }
     },
     "tablaroca": {
       "nombre": "Instalación de Tablaroca",
       "descripcion": "Muros, plafones y revestimientos",
+      "medible": true,
       "materiales": {
-        "placa_tablaroca": {
-          "nombre": "Placa de tablaroca (1.22 x 2.44 m)",
-          "cantidad_por_m2": 0.34,
-          "unidad": "piezas",
-          "precio_unitario": 280
-        },
-        "pegamento": {
-          "nombre": "Pegamento para tablaroca",
-          "cantidad_por_m2": 0.5,
-          "unidad": "kg",
-          "precio_unitario": 150
-        },
-        "tornillos": {
-          "nombre": "Tornillos para tablaroca (1 1/4\")",
-          "cantidad_por_m2": 15,
-          "unidad": "piezas",
-          "precio_unitario": 2
-        },
-        "cinta": {
-          "nombre": "Cinta de papel para juntas",
-          "cantidad_por_m2": 1.5,
-          "unidad": "metros",
-          "precio_unitario": 15
-        },
-        "masilla": {
-          "nombre": "Masilla para juntas",
-          "cantidad_por_m2": 1.2,
-          "unidad": "kg",
-          "precio_unitario": 180
-        }
+        "placa_tablaroca": { "cantidad_por_m2": 0.34 },
+        "pegamento_tablaroca": { "cantidad_por_m2": 0.5 },
+        "tornillos_tablaroca": { "cantidad_por_m2": 15 },
+        "cinta_papel": { "cantidad_por_m2": 1.5 },
+        "masilla_juntas": { "cantidad_por_m2": 1.2 }
       }
     },
     "impermeabilizacion": {
       "nombre": "Impermeabilización",
       "descripcion": "Impermeabilización de azoteas y techos",
+      "medible": true,
       "materiales": {
-        "impermeabilizante": {
-          "nombre": "Impermeabilizante líquido",
-          "cantidad_por_m2": 1.2,
-          "unidad": "litros",
-          "precio_unitario": 500
-        },
-        "primer": {
-          "nombre": "Primer / Sellador",
-          "cantidad_por_m2": 0.3,
-          "unidad": "litros",
-          "precio_unitario": 400
-        },
-        "aditivo": {
-          "nombre": "Aditivo impermeabilizante",
-          "cantidad_por_m2": 0.2,
-          "unidad": "kg",
-          "precio_unitario": 300
-        },
-        "tela_asfaltica": {
-          "nombre": "Tela asfáltica (opcional)",
-          "cantidad_por_m2": 1.1,
-          "unidad": "m2",
-          "precio_unitario": 600
-        }
+        "impermeabilizante": { "cantidad_por_m2": 1.2 },
+        "primer": { "cantidad_por_m2": 0.3 },
+        "aditivo_impermeabilizante": { "cantidad_por_m2": 0.2 },
+        "tela_asfaltica": { "cantidad_por_m2": 1.1 }
       }
     },
     "plomeria": {
       "nombre": "Plomería",
       "descripcion": "Instalación y reparación de tuberías",
-      "materiales": {
-        "tuberia_pvc": {
-          "nombre": "Tubería PVC 3/4\"",
-          "cantidad_por_m2": 2,
-          "unidad": "metros",
-          "precio_unitario": 80
-        },
-        "codos": {
-          "nombre": "Codos PVC 3/4\"",
-          "cantidad_por_m2": 1.5,
-          "unidad": "piezas",
-          "precio_unitario": 25
-        },
-        "uniones": {
-          "nombre": "Uniones / Acoples",
-          "cantidad_por_m2": 2,
-          "unidad": "piezas",
-          "precio_unitario": 30
-        },
-        "pegamento_pvc": {
-          "nombre": "Pegamento PVC",
-          "cantidad_por_m2": 0.05,
-          "unidad": "litros",
-          "precio_unitario": 250
-        },
-        "teflon": {
-          "nombre": "Cinta teflón",
-          "cantidad_por_m2": 1,
-          "unidad": "rollos",
-          "precio_unitario": 40
-        }
-      }
+      "medible": false,
+      "materiales": {}
     }
   }
 }
