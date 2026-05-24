@@ -444,7 +444,7 @@
       </div>
     </a>
     <button class="menu-toggle" onclick="toggleMobileMenu()" title="Menú">☰</button>
-    <nav class="nav mobile-closed">
+    <nav class="nav">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html" class="is-active">Calculadora</a>
       <a href="admin.html">Admin</a>
@@ -609,7 +609,7 @@
 // Mobile menu toggle
 function toggleMobileMenu() {
   const nav = document.querySelector('.nav');
-  nav?.classList.toggle('mobile-closed');
+  nav?.classList.toggle('mobile-open');
 }
 
 // Close menu when clicking a link
@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.nav a');
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      document.querySelector('.nav')?.classList.add('mobile-closed');
+      document.querySelector('.nav')?.classList.remove('mobile-open');
     });
   });
 });
