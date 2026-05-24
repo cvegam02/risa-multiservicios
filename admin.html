@@ -741,8 +741,19 @@
       border-bottom: 1px solid var(--concrete-200);
     }
 
+    .material-card__title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--navy-900);
+      font-size: 14px;
+    }
+
     .material-card__icon {
       font-size: 20px;
+      flex-shrink: 0;
     }
 
     .material-card__delete {
@@ -755,6 +766,7 @@
       border-radius: 6px;
       transition: all 150ms;
       flex-shrink: 0;
+      margin-left: 12px;
     }
 
     .material-card__delete:hover {
@@ -1384,22 +1396,13 @@ function buildAdminTabs() {
         ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
           <div class="material-card">
             <div class="material-card__header">
-              <span class="material-card__icon">📦</span>
+              <div class="material-card__title">
+                <span class="material-card__icon">📦</span>
+                <span>${escapeHtml(material.nombre)}</span>
+              </div>
               <button class="material-card__delete" onclick="removeMaterial('${serviceKey}','${materialKey}')" title="Eliminar material">✕</button>
             </div>
             <div class="material-card__body">
-              <div>
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  value="${escapeHtml(material.nombre)}"
-                  data-service="${serviceKey}"
-                  data-material="${materialKey}"
-                  data-field="nombre"
-                  placeholder="Nombre del material"
-                />
-              </div>
-
               <div class="material-card__row">
                 <div>
                   <label>Cantidad/m²</label>
