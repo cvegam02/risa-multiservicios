@@ -271,8 +271,8 @@
     /* Material Table */
     .admin-material-table {
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
       margin-bottom: 24px;
     }
@@ -280,11 +280,12 @@
     /* Tablet: 2-column grid */
     @media (min-width: 640px) {
       .admin-material-table {
+        display: grid;
         grid-template-columns: 1fr 1fr;
       }
     }
 
-    /* Material Row (as card on mobile, table row on desktop) */
+    /* Material Row (as card on mobile/tablet, table row on desktop) */
     .admin-material-row {
       padding: 16px;
       background: var(--white);
@@ -299,6 +300,7 @@
     .admin-material-name {
       font-weight: 700;
       color: var(--navy-900);
+      font-size: 15px;
     }
 
     .admin-material-meta {
@@ -306,18 +308,191 @@
       color: var(--concrete-700);
     }
 
-    /* Desktop: Single-column expanded view */
+    /* Desktop: Traditional table layout */
     @media (min-width: 1024px) {
       .admin-material-table {
-        grid-template-columns: 1fr;
+        display: table;
+        grid-template-columns: none;
+        gap: 0;
+        border-collapse: collapse;
+        width: 100%;
       }
 
       .admin-material-row {
-        padding: 20px;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        display: table-row;
+        padding: 0;
+        background: var(--white);
+        border: none;
+        border-bottom: 1px solid var(--concrete-100);
+        border-radius: 0;
+        gap: 0;
       }
+
+      .admin-material-row:last-child {
+        border-bottom: none;
+      }
+
+      .admin-material-row > div {
+        display: table-cell;
+        padding: 16px;
+        vertical-align: middle;
+        border: none;
+      }
+
+      .admin-material-row > div:first-child {
+        width: 40%;
+      }
+
+      .admin-material-row > div:nth-child(2),
+      .admin-material-row > div:nth-child(3) {
+        width: 15%;
+        text-align: left;
+      }
+
+      .admin-material-row > div:nth-child(4) {
+        width: 30%;
+        text-align: right;
+      }
+
+      .admin-material-name {
+        font-size: 15px;
+      }
+
+      .admin-material-meta {
+        display: none;
+      }
+
+      .btn-row {
+        gap: 8px;
+        flex-direction: row;
+      }
+    }
+
+    /* Table header styles for desktop */
+    .admin-material-table-header {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .admin-material-table-header {
+        display: table-row;
+        background: var(--concrete-50);
+        border-bottom: 2px solid var(--concrete-200);
+      }
+
+      .admin-material-table-header > div {
+        display: table-cell;
+        padding: 16px;
+        font-weight: 700;
+        color: var(--navy-900);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .admin-material-table-header .admin-material-col-actions {
+        text-align: right;
+      }
+    }
+
+    /* Modal Styles */
+    .admin-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .admin-modal.active {
+      display: flex;
+    }
+
+    .admin-modal-content {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-modal-header {
+      margin-bottom: 24px;
+    }
+
+    .admin-modal-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--navy-900);
+    }
+
+    .admin-modal-body {
+      margin-bottom: 24px;
+    }
+
+    .admin-modal-field {
+      margin-bottom: 16px;
+    }
+
+    .admin-modal-field label {
+      display: block;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .admin-modal-field input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--concrete-200);
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    .admin-modal-field input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .admin-modal-field .admin-material-info {
+      font-size: 13px;
+      color: var(--concrete-700);
+      margin-top: 6px;
+    }
+
+    .admin-modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .admin-modal-footer button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .admin-modal-footer .btn-save {
+      background: var(--navy-700);
+      color: white;
+    }
+
+    .admin-modal-footer .btn-cancel {
+      background: var(--concrete-100);
+      color: var(--ink);
     }
 
     /* Service Layout */
@@ -459,6 +634,34 @@
     <!-- LOGOUT -->
     <div style="text-align: center; margin-top: 40px;">
       <button onclick="logoutAdmin()" style="padding: 12px 20px; background: var(--concrete-200); color: var(--ink); border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: EDITAR MATERIAL ============ -->
+<div id="editMaterialModal" class="admin-modal">
+  <div class="admin-modal-content">
+    <div class="admin-modal-header">
+      <h2>Editar Material</h2>
+    </div>
+    <div class="admin-modal-body">
+      <div class="admin-modal-field">
+        <label for="modalMaterialName">Material</label>
+        <input type="text" id="modalMaterialName" disabled />
+      </div>
+      <div class="admin-modal-field">
+        <label for="modalMaterialUnit">Unidad</label>
+        <input type="text" id="modalMaterialUnit" disabled />
+      </div>
+      <div class="admin-modal-field">
+        <label for="modalMaterialPrice">Precio Unitario ($)</label>
+        <input type="number" id="modalMaterialPrice" step="0.01" min="0" />
+        <div class="admin-material-info" id="modalMaterialPriceInfo"></div>
+      </div>
+    </div>
+    <div class="admin-modal-footer">
+      <button class="btn-cancel" onclick="closeMaterialModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveMaterialModal()">Guardar</button>
     </div>
   </div>
 </div>

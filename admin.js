@@ -53,26 +53,35 @@ function loadCustomData() {
 
 // ============ MATERIALS TAB ============
 
+// Store current material being edited
+let currentEditingMaterial = null;
+
 function renderMaterialsTab() {
   const container = document.getElementById('materialsTabContent');
   if (!container) return;
 
   let html = `
     <div class="admin-material-table">
+      <div class="admin-material-table-header">
+        <div>Nombre</div>
+        <div>Unidad</div>
+        <div>Precio Unitario</div>
+        <div class="admin-material-col-actions">Acciones</div>
+      </div>
   `;
 
   Object.entries(materiales).forEach(([key, mat]) => {
     html += `
       <div class="admin-material-row">
-        <div class="admin-flex-between">
-          <div>
-            <div class="admin-material-name">${escapeHtml(mat.nombre)}</div>
-            <div class="admin-material-meta">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
-          </div>
-          <div class="btn-row">
-            <button onclick="editMaterialModal('${escapeHtml(key)}')" class="admin-btn-primary">Editar</button>
-            <button onclick="deleteMaterial('${escapeHtml(key)}')" class="admin-btn-danger">Eliminar</button>
-          </div>
+        <div>
+          <div class="admin-material-name">${escapeHtml(mat.nombre)}</div>
+          <div class="admin-material-meta">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
+        </div>
+        <div>${escapeHtml(mat.unidad)}</div>
+        <div>$${mat.precio_unitario.toFixed(2)}</div>
+        <div class="btn-row">
+          <button onclick="openEditMaterialModal('${escapeHtml(key)}')" class="admin-btn-primary">Editar</button>
+          <button onclick="deleteMaterial('${escapeHtml(key)}')" class="admin-btn-danger">Eliminar</button>
         </div>
       </div>
     `;
@@ -80,28 +89,53 @@ function renderMaterialsTab() {
 
   html += `
     </div>
-    <button onclick="addMaterialModal()" class="admin-btn-success w-full">+ Agregar Material</button>
+    <button onclick="openAddMaterialModal()" class="admin-btn-success w-full" style="margin-top: 20px;">+ Agregar Material</button>
   `;
 
   container.innerHTML = html;
 }
 
-function editMaterialModal(key) {
+function openEditMaterialModal(key) {
   const mat = materiales[key];
-  const newPrice = prompt(`Editar precio de "${mat.nombre}":\n\nPrecio actual: $${mat.precio_unitario}`, mat.precio_unitario);
+  if (!mat) return;
 
-  if (newPrice !== null && newPrice.trim() !== '') {
-    const price = parseFloat(newPrice);
-    if (!isNaN(price) && price >= 0) {
-      materiales[key].precio_unitario = price;
-      saveMateriales();
-      renderMaterialsTab();
-      renderServicesTab();
-      alert('✓ Precio actualizado');
-    } else {
-      alert('Error: ingresa un precio válido');
-    }
+  currentEditingMaterial = key;
+
+  document.getElementById('modalMaterialName').value = mat.nombre;
+  document.getElementById('modalMaterialUnit').value = mat.unidad;
+  document.getElementById('modalMaterialPrice').value = mat.precio_unitario;
+  document.getElementById('modalMaterialPriceInfo').textContent = `Precio actual: $${mat.precio_unitario.toFixed(2)}`;
+
+  document.getElementById('editMaterialModal').classList.add('active');
+  document.getElementById('modalMaterialPrice').focus();
+}
+
+function closeMaterialModal() {
+  document.getElementById('editMaterialModal').classList.remove('active');
+  currentEditingMaterial = null;
+}
+
+function saveMaterialModal() {
+  if (!currentEditingMaterial) return;
+
+  const newPrice = parseFloat(document.getElementById('modalMaterialPrice').value);
+
+  if (isNaN(newPrice) || newPrice < 0) {
+    alert('❌ Ingresa un precio válido');
+    return;
   }
+
+  materiales[currentEditingMaterial].precio_unitario = newPrice;
+  saveMateriales();
+  renderMaterialsTab();
+  renderServicesTab();
+
+  closeMaterialModal();
+  alert('✓ Precio actualizado');
+}
+
+function editMaterialModal(key) {
+  openEditMaterialModal(key);
 }
 
 function addMaterialModal() {
@@ -632,6 +666,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const firstService = Object.keys(servicios)[0];
   if (firstService) {
     currentServiceKey = firstService;
+  }
+
+  // Modal handlers
+  const modal = document.getElementById('editMaterialModal');
+  if (modal) {
+    // Close modal on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeMaterialModal();
+      }
+    });
+
+    // Close modal on background click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeMaterialModal();
+      }
+    });
   }
 
   // Render all tabs
