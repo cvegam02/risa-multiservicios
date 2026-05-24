@@ -229,9 +229,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
   }
 
   .nav__cta {
-    margin-top: 8px;
-    justify-content: center;
-    font-size: 12px;
+    display: none;
   }
 
   .site-header__inner {
@@ -246,58 +244,6 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
   .menu-toggle {
     order: 2;
-  }
-}
-
-/* ===== Floating Admin Button ===== */
-.floating-admin-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
-  color: var(--white);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(15, 30, 74, 0.4);
-  transition: all 200ms;
-  z-index: 99;
-  text-decoration: none;
-}
-
-.floating-admin-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(15, 30, 74, 0.5);
-  background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-900) 100%);
-}
-
-.floating-admin-btn:active {
-  transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-  .floating-admin-btn {
-    bottom: 16px;
-    right: 16px;
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
-  }
-}
-
-@media (max-width: 480px) {
-  .floating-admin-btn {
-    bottom: 12px;
-    right: 12px;
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
   }
 }
 
