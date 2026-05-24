@@ -7,7 +7,8 @@
       "Bash(cp -r \"/home/cvega/Descargas/RISA Multiservicios-handoff/risa-multiservicios/project\"/* /home/cvega/Documentos/Projects/RISA/)",
       "Bash(gh auth *)",
       "Bash(cat ~/.claude/skills/ui-ux-pro-max/skill.json)",
-      "Read(//home/cvega/.claude/skills/ui-ux-pro-max/**)"
+      "Read(//home/cvega/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(curl -s http://localhost:8000/index.html)"
     ]
   }
 }

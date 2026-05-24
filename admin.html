@@ -411,16 +411,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadAdminMateriales() {
   try {
     const response = await fetch('materiales.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     adminMateriales = data.servicios;
 
     // Cargar configuración personalizada si existe
     const saved = localStorage.getItem('risaMateriales');
     if (saved) {
-      adminMateriales = JSON.parse(saved);
+      try {
+        adminMateriales = JSON.parse(saved);
+      } catch (e) {
+        localStorage.removeItem('risaMateriales');
+      }
     }
   } catch (error) {
-    console.error('Error cargando materiales:', error);
+    adminMateriales = {};
   }
 }
 
