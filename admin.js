@@ -334,30 +334,30 @@ function renderCalculatorTab() {
   });
 
   let html = `
-    <div class="admin-calc-grid" style="margin-top: 24px;">
-      <div>
-        <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px; height: fit-content; position: sticky; top: 120px;">
+    <div class="admin-calc-grid">
+      <div class="admin-calc-form">
+        <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px; height: fit-content;">
           <h3 style="font-size: 20px; font-weight: 900; margin: 0 0 24px; color: var(--navy-900);">Generar Presupuesto</h3>
 
-          <div style="margin-bottom: 20px;">
+          <div class="admin-mb-20">
             <label style="display: block; font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--navy-700); margin-bottom: 8px;">Tipo de servicio</label>
             <select id="calcServiceSelect" onchange="onCalcServiceChange()" style="width: 100%; padding: 12px 14px; border: 1.5px solid var(--concrete-200); border-radius: 8px; font-size: 15px; font-weight: 500; background: var(--concrete-50);">
               ${servicesOptions}
             </select>
           </div>
 
-          <div style="margin-bottom: 32px;">
+          <div class="admin-mb-32">
             <label style="display: block; font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--navy-700); margin-bottom: 8px;">Área (m²)</label>
             <input type="number" id="calcAreaInput" placeholder="30" min="1" step="0.5" onchange="calculateBudget()" style="width: 100%; padding: 12px 14px; border: 1.5px solid var(--concrete-200); border-radius: 8px; font-size: 15px; font-weight: 500; background: var(--concrete-50);">
           </div>
 
-          <div style="display: flex; gap: 12px;">
-            <button onclick="resetCalculator()" style="flex: 1; padding: 12px; background: var(--concrete-100); color: var(--ink); border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">Limpiar</button>
+          <div class="admin-btn-row">
+            <button onclick="resetCalculator()" class="admin-btn-secondary admin-w-full">Limpiar</button>
           </div>
         </div>
       </div>
 
-      <div id="calcResults"></div>
+      <div id="calcResults" class="admin-calc-results"></div>
     </div>
   `;
 
@@ -411,7 +411,7 @@ function calculateBudget() {
     <div class="admin-calc-results">
       <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px;">
         <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 20px; color: var(--navy-900);">📋 Materiales necesarios</h4>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="admin-flex admin-flex-col admin-gap-12">
   `;
 
   Object.values(resultados).forEach(mat => {
@@ -432,7 +432,7 @@ function calculateBudget() {
 
       <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px;">
         <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 20px; color: var(--navy-900);">💰 Presupuesto estimado</h4>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="admin-flex admin-flex-col admin-gap-12">
           <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--concrete-100);">
             <span style="color: var(--concrete-700); font-weight: 500;">Servicio</span>
             <span style="font-weight: 700; color: var(--navy-900);">${escapeHtml(service.nombre)}</span>
@@ -454,9 +454,9 @@ function calculateBudget() {
 
       <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px;">
         <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 16px; color: var(--navy-900);">Descargar</h4>
-        <div style="display: flex; gap: 12px;">
-          <button onclick="downloadBudgetPDF()" style="flex: 1; padding: 12px; background: var(--navy-900); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">📄 Descargar PDF</button>
-          <button onclick="shareBudget()" style="flex: 1; padding: 12px; background: var(--navy-700); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">🔗 Compartir</button>
+        <div class="admin-btn-row">
+          <button onclick="downloadBudgetPDF()" class="admin-btn-primary admin-w-full">📄 Descargar PDF</button>
+          <button onclick="shareBudget()" class="admin-btn-primary admin-w-full">🔗 Compartir</button>
         </div>
       </div>
     </div>
