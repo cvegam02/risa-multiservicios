@@ -58,38 +58,29 @@ function renderMaterialsTab() {
   if (!container) return;
 
   let html = `
-    <div style="margin-bottom: 24px;">
-      <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr style="background: var(--concrete-50); border-bottom: 2px solid var(--concrete-200);">
-            <th style="padding: 12px; text-align: left; font-weight: 700;">Material</th>
-            <th style="padding: 12px; text-align: left; font-weight: 700;">Unidad</th>
-            <th style="padding: 12px; text-align: right; font-weight: 700;">Precio</th>
-            <th style="padding: 12px; text-align: center; font-weight: 700;">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div class="material-table">
   `;
 
   Object.entries(materiales).forEach(([key, mat]) => {
     html += `
-      <tr style="border-bottom: 1px solid var(--concrete-100);">
-        <td style="padding: 12px;">${escapeHtml(mat.nombre)}</td>
-        <td style="padding: 12px;">${escapeHtml(mat.unidad)}</td>
-        <td style="padding: 12px; text-align: right;">$${mat.precio_unitario.toFixed(2)}</td>
-        <td style="padding: 12px; text-align: center;">
-          <button onclick="editMaterialModal('${key}')" style="padding: 8px 12px; background: var(--navy-700); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 8px;">Editar</button>
-          <button onclick="deleteMaterial('${key}')" style="padding: 8px 12px; background: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">Eliminar</button>
-        </td>
-      </tr>
+      <div class="material-row">
+        <div class="flex-between">
+          <div>
+            <div style="font-weight: 700; color: var(--navy-900);">${escapeHtml(mat.nombre)}</div>
+            <div style="font-size: 13px; color: var(--concrete-700);">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
+          </div>
+          <div class="btn-row">
+            <button onclick="editMaterialModal('${key}')" class="btn-primary">Editar</button>
+            <button onclick="deleteMaterial('${key}')" class="btn-danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
     `;
   });
 
   html += `
-        </tbody>
-      </table>
     </div>
-    <button onclick="addMaterialModal()" style="padding: 12px 20px; background: var(--yellow-500); color: var(--ink); border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">+ Agregar Material</button>
+    <button onclick="addMaterialModal()" class="btn-success w-full">+ Agregar Material</button>
   `;
 
   container.innerHTML = html;
