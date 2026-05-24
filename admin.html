@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Administración — RISA Multiservicios</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    .admin-section {
+      background: var(--white);
+      border: 1px solid var(--concrete-100);
+      border-radius: 14px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .admin-section h3 {
+      font-weight: 900;
+      font-size: 22px;
+      margin: 0 0 24px;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-section h3::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--yellow-500);
+      border-radius: 2px;
+    }
+
+    /* Login Section */
+    .login-box {
+      max-width: 400px;
+      margin: 0 auto;
+      background: var(--navy-900);
+      color: var(--white);
+      padding: 40px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-box h2 {
+      margin: 0 0 32px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .login-field {
+      margin-bottom: 20px;
+    }
+
+    .login-field label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--yellow-500);
+      margin-bottom: 8px;
+    }
+
+    .login-field input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    .login-field input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .login-field input:focus {
+      outline: none;
+      border-color: var(--yellow-500);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--yellow-500);
+      color: var(--ink);
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 150ms;
+    }
+
+    .login-btn:hover {
+      background: var(--yellow-600);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Config Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--concrete-200);
+      overflow-x: auto;
+    }
+
+    .admin-tab {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--concrete-700);
+      cursor: pointer;
+      transition: all 150ms;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      white-space: nowrap;
+    }
+
+    .admin-tab.active {
+      color: var(--navy-900);
+      border-bottom-color: var(--yellow-500);
+    }
+
+    .admin-tab:hover {
+      color: var(--navy-900);
+    }
+
+    /* Material Table */
+    .material-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+
+    .material-table thead {
+      background: var(--navy-50);
+    }
+
+    .material-table th {
+      padding: 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 2px solid var(--concrete-200);
+    }
+
+    .material-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--concrete-200);
+      font-size: 14px;
+    }
+
+    .material-table tr:hover {
+      background: rgba(251, 191, 36, 0.05);
+    }
+
+    .material-table input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .material-table input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      background: var(--white);
+    }
+
+    .material-name {
+      font-weight: 600;
+      color: var(--navy-900);
+    }
+
+    .material-unit {
+      color: var(--concrete-700);
+      font-weight: 500;
+    }
+
+    /* Content Tabs */
+    .admin-content {
+      display: none;
+    }
+
+    .admin-content.active {
+      display: block;
+    }
+
+    /* Buttons */
+    .admin-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--concrete-200);
+      flex-wrap: wrap;
+    }
+
+    .admin-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 150ms;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .btn-save {
+      background: var(--yellow-500);
+      color: var(--ink);
+    }
+
+    .btn-save:hover {
+      background: var(--yellow-600);
+    }
+
+    .btn-export {
+      background: var(--navy-700);
+      color: var(--white);
+    }
+
+    .btn-export:hover {
+      background: var(--navy-900);
+    }
+
+    .btn-reset {
+      background: var(--concrete-200);
+      color: var(--ink);
+    }
+
+    .btn-reset:hover {
+      background: var(--concrete-300);
+    }
+
+    .btn-logout {
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    .btn-logout:hover {
+      background: #c41c1c;
+    }
+
+    .logout-zone {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .info-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #92400e;
+      margin-bottom: 24px;
+    }
+
+    .import-input {
+      display: none;
+    }
+
+    #loginSection {
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #adminSection {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand__mark" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <div class="brand__name">RISA</div>
+        <div class="brand__tag">Multiservicios</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="calculadora.html">Calculadora</a>
+      <a href="admin.html" class="is-active">Admin</a>
+      <a href="tel:6621210904" class="nav__cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        662 121 0904
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ CONTENT ============ -->
+<section class="admin-container">
+  <!-- Login Section -->
+  <div id="loginSection">
+    <div class="login-box">
+      <h2>🔐 Panel de Administración</h2>
+      <div class="login-field">
+        <label>Contraseña</label>
+        <input type="password" id="passwordInput" placeholder="Ingresa la contraseña" onkeypress="if(event.key==='Enter') adminLogin()" />
+      </div>
+      <button class="login-btn" onclick="adminLogin()">Acceder</button>
+      <p style="text-align: center; font-size: 12px; margin-top: 20px; color: rgba(255,255,255,0.6);">
+        Acceso restringido para administradores
+      </p>
+    </div>
+  </div>
+
+  <!-- Admin Section -->
+  <div id="adminSection">
+    <div class="logout-zone" style="margin-bottom: 32px;">
+      <button class="admin-btn btn-logout" onclick="adminLogout()">🚪 Cerrar sesión</button>
+    </div>
+
+    <div class="admin-section">
+      <h3>Configurar Materiales y Precios</h3>
+
+      <div class="info-box">
+        💡 Edita los valores de materiales aquí. Los cambios se guardarán automáticamente y se aplicarán a todas las calculadoras.
+      </div>
+
+      <div class="admin-tabs" id="adminTabs"></div>
+      <div id="adminContents"></div>
+
+      <div class="admin-buttons">
+        <button class="admin-btn btn-save" onclick="saveAdminSettings()">💾 Guardar cambios</button>
+        <button class="admin-btn btn-export" onclick="exportAdminConfig()">📥 Descargar configuración</button>
+        <button class="admin-btn btn-export" onclick="triggerAdminImport()">📤 Cargar configuración</button>
+        <button class="admin-btn btn-reset" onclick="resetAdminDefaults()">🔄 Restaurar predeterminados</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<input type="file" id="importAdminInput" class="import-input" accept=".json" onchange="importAdminConfig(event)" />
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-about">
+      <a href="index.html" class="brand">
+        <div class="brand__mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <div class="brand__name" style="color:var(--white);">RISA</div>
+          <div class="brand__tag">Multiservicios</div>
+        </div>
+      </a>
+      <p>Trabajo firme, bien hecho. Panel de administración seguro.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 RISA Multiservicios. Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+<script>
+let adminMateriales = {};
+
+// Cargar datos al abrir
+document.addEventListener('DOMContentLoaded', async () => {
+  checkAdminAuth();
+  await loadAdminMateriales();
+});
+
+// Cargar materiales
+async function loadAdminMateriales() {
+  try {
+    const response = await fetch('materiales.json');
+    const data = await response.json();
+    adminMateriales = data.servicios;
+
+    // Cargar configuración personalizada si existe
+    const saved = localStorage.getItem('risaMateriales');
+    if (saved) {
+      adminMateriales = JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error('Error cargando materiales:', error);
+  }
+}
+
+// Verificar autenticación
+function checkAdminAuth() {
+  const isAuthenticated = sessionStorage.getItem('risaAdminAuth');
+
+  if (isAuthenticated === 'true') {
+    showAdminPanel();
+  } else {
+    showLoginPanel();
+  }
+}
+
+// Login
+function adminLogin() {
+  const password = document.getElementById('passwordInput').value;
+  const correctPassword = 'risa2024'; // Cambiar esto por una contraseña más segura
+
+  if (password === correctPassword) {
+    sessionStorage.setItem('risaAdminAuth', 'true');
+    showAdminPanel();
+  } else {
+    alert('❌ Contraseña incorrecta');
+    document.getElementById('passwordInput').value = '';
+  }
+}
+
+// Logout
+function adminLogout() {
+  sessionStorage.removeItem('risaAdminAuth');
+  showLoginPanel();
+  document.getElementById('passwordInput').value = '';
+}
+
+// Mostrar login
+function showLoginPanel() {
+  document.getElementById('loginSection').style.display = 'flex';
+  document.getElementById('adminSection').style.display = 'none';
+  document.getElementById('passwordInput').focus();
+}
+
+// Mostrar admin
+function showAdminPanel() {
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('adminSection').style.display = 'block';
+  buildAdminTabs();
+}
+
+// Construir tabs
+function buildAdminTabs() {
+  const tabsContainer = document.getElementById('adminTabs');
+  const contentsContainer = document.getElementById('adminContents');
+
+  tabsContainer.innerHTML = '';
+  contentsContainer.innerHTML = '';
+
+  let isFirst = true;
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    // Tab
+    const tabBtn = document.createElement('button');
+    tabBtn.className = `admin-tab ${isFirst ? 'active' : ''}`;
+    tabBtn.textContent = servicio.nombre;
+    tabBtn.onclick = () => switchAdminTab(serviceKey);
+    tabsContainer.appendChild(tabBtn);
+
+    // Content
+    const contentDiv = document.createElement('div');
+    contentDiv.className = `admin-content ${isFirst ? 'active' : ''}`;
+    contentDiv.id = `admin-${serviceKey}`;
+
+    const tableHTML = `
+      <table class="material-table">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Cantidad/m²</th>
+            <th>Unidad</th>
+            <th>Precio unitario ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
+            <tr>
+              <td><span class="material-name">${material.nombre}</span></td>
+              <td>
+                <input
+                  type="number"
+                  step="0.01"
+                  value="${material.cantidad_por_m2}"
+                  data-service="${serviceKey}"
+                  data-material="${materialKey}"
+                  data-field="cantidad_por_m2"
+                />
+              </td>
+              <td><span class="material-unit">${material.unidad}</span></td>
+              <td>
+                <input
+                  type="number"
+                  step="0.01"
+                  value="${material.precio_unitario}"
+                  data-service="${serviceKey}"
+                  data-material="${materialKey}"
+                  data-field="precio_unitario"
+                />
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    contentDiv.innerHTML = tableHTML;
+    contentsContainer.appendChild(contentDiv);
+
+    isFirst = false;
+  });
+}
+
+// Cambiar tab
+function switchAdminTab(serviceKey) {
+  document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.admin-content').forEach(content => content.classList.remove('active'));
+
+  event.target.classList.add('active');
+  document.getElementById(`admin-${serviceKey}`).classList.add('active');
+}
+
+// Guardar configuración
+function saveAdminSettings() {
+  const inputs = document.querySelectorAll('.material-table input');
+
+  inputs.forEach(input => {
+    const serviceKey = input.dataset.service;
+    const materialKey = input.dataset.material;
+    const field = input.dataset.field;
+    const value = parseFloat(input.value);
+
+    if (adminMateriales[serviceKey] && adminMateriales[serviceKey].materiales[materialKey]) {
+      adminMateriales[serviceKey].materiales[materialKey][field] = value;
+    }
+  });
+
+  localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
+  alert('✓ Configuración guardada correctamente');
+}
+
+// Exportar
+function exportAdminConfig() {
+  const dataStr = JSON.stringify(adminMateriales, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `risa-config-${Date.now()}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// Importar
+function triggerAdminImport() {
+  document.getElementById('importAdminInput').click();
+}
+
+function importAdminConfig(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      adminMateriales = imported;
+      localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
+      buildAdminTabs();
+      alert('✓ Configuración cargada correctamente');
+    } catch (error) {
+      alert('❌ Error al cargar el archivo. Verifica que sea un JSON válido.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// Restaurar predeterminados
+function resetAdminDefaults() {
+  if (confirm('¿Restaurar todos los valores por defecto? Esta acción no se puede deshacer.')) {
+    localStorage.removeItem('risaMateriales');
+    location.reload();
+  }
+}
+</script>
+</body>
+</html>
