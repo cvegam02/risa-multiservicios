@@ -163,6 +163,133 @@
       white-space: nowrap;
     }
 
+    /* Material Edit Modal */
+    .material-edit-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 74, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      backdrop-filter: blur(4px);
+    }
+
+    .material-edit-modal.active {
+      display: flex;
+    }
+
+    .material-edit-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 300ms ease-out;
+    }
+
+    .material-edit-box h3 {
+      margin: 0 0 24px;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--navy-900);
+      letter-spacing: -0.01em;
+    }
+
+    .material-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .material-edit-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .material-edit-field label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--concrete-700);
+    }
+
+    .material-edit-field input {
+      padding: 12px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 150ms;
+    }
+
+    .material-edit-field input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .material-edit-services {
+      background: var(--concrete-50);
+      border: 1px solid var(--concrete-200);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--concrete-700);
+    }
+
+    .material-edit-services strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--navy-900);
+    }
+
+    .material-edit-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .material-edit-actions button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 200ms;
+    }
+
+    .material-edit-actions button:first-child {
+      background: var(--concrete-100);
+      color: var(--ink);
+    }
+
+    .material-edit-actions button:first-child:hover {
+      background: var(--concrete-200);
+    }
+
+    .material-edit-actions button:last-child {
+      background: linear-gradient(135deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
+      color: var(--ink);
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .material-edit-actions button:last-child:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+    }
+
     /* Login Section - Moderno */
     .login-box {
       max-width: 420px;
@@ -979,6 +1106,39 @@
   </div>
 </div>
 
+<!-- ============ EDIT MATERIAL MODAL ============ -->
+<div id="editMaterialModal" class="material-edit-modal">
+  <div class="material-edit-box">
+    <h3>Editar Material</h3>
+    <div class="material-edit-form">
+      <div class="material-edit-field">
+        <label for="editMaterialName">Nombre del material</label>
+        <input id="editMaterialName" type="text" />
+      </div>
+      <div class="material-edit-field">
+        <label for="editMaterialUnit">Unidad</label>
+        <input id="editMaterialUnit" type="text" />
+      </div>
+      <div class="material-edit-field">
+        <label for="editMaterialPrice">Precio unitario ($)</label>
+        <input id="editMaterialPrice" type="number" step="0.01" />
+      </div>
+      <div class="material-edit-field">
+        <label for="editMaterialQty">Cantidad por m²</label>
+        <input id="editMaterialQty" type="number" step="0.01" />
+      </div>
+      <div class="material-edit-services">
+        <strong>Se actualizará en estos servicios:</strong>
+        <div id="editMaterialServices"></div>
+      </div>
+    </div>
+    <div class="material-edit-actions">
+      <button onclick="closeEditMaterialModal()">Cancelar</button>
+      <button onclick="saveEditedMaterial()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
   <div class="footer-inner">
@@ -1007,6 +1167,19 @@ let adminMateriales = {};
 document.addEventListener('DOMContentLoaded', async () => {
   await loadAdminMateriales();
   checkAdminAuth();
+
+  // Cerrar modales al hacer click fuera
+  document.getElementById('editMaterialModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'editMaterialModal') {
+      closeEditMaterialModal();
+    }
+  });
+
+  document.getElementById('newServiceModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'newServiceModal') {
+      cancelNewService();
+    }
+  });
 });
 
 // Cargar materiales
@@ -1248,7 +1421,7 @@ function buildMaterialsTable() {
 
   // Generar HTML
   tbody.innerHTML = sortedMaterials.map(material => `
-    <tr>
+    <tr onclick="openEditMaterialModal('${escapeHtml(material.nombre)}', '${escapeHtml(material.unidad)}', ${material.precio_unitario}, ${material.cantidad_por_m2})" style="cursor: pointer;">
       <td class="material-name">${escapeHtml(material.nombre)}</td>
       <td class="material-unit">${escapeHtml(material.unidad)}</td>
       <td class="material-price">$${material.precio_unitario.toFixed(2)}</td>
@@ -1378,6 +1551,92 @@ function showNewServiceModal() {
 function cancelNewService() {
   document.getElementById('newServiceModal').classList.remove('active');
   document.getElementById('newServiceNombre').value = '';
+}
+
+// ===== MATERIAL EDIT MODAL FUNCTIONS =====
+
+let editingMaterialName = '';
+let editingMaterialServices = [];
+
+function openEditMaterialModal(materialName, unit, price, qty) {
+  editingMaterialName = materialName;
+  editingMaterialServices = [];
+
+  // Find all services that use this material
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    Object.entries(servicio.materiales).forEach(([matKey, mat]) => {
+      if (mat.nombre.toLowerCase() === materialName.toLowerCase()) {
+        editingMaterialServices.push(servicio.nombre);
+      }
+    });
+  });
+
+  // Populate modal fields
+  document.getElementById('editMaterialName').value = materialName;
+  document.getElementById('editMaterialUnit').value = unit;
+  document.getElementById('editMaterialPrice').value = price;
+  document.getElementById('editMaterialQty').value = qty;
+
+  // Show services
+  const servicesDiv = document.getElementById('editMaterialServices');
+  servicesDiv.innerHTML = editingMaterialServices.map(service =>
+    `<div>• ${escapeHtml(service)}</div>`
+  ).join('');
+
+  // Show modal
+  document.getElementById('editMaterialModal').classList.add('active');
+  document.getElementById('editMaterialName').focus();
+}
+
+function closeEditMaterialModal() {
+  document.getElementById('editMaterialModal').classList.remove('active');
+  editingMaterialName = '';
+  editingMaterialServices = [];
+}
+
+function saveEditedMaterial() {
+  const newName = document.getElementById('editMaterialName').value.trim();
+  const newUnit = document.getElementById('editMaterialUnit').value.trim();
+  const newPrice = parseFloat(document.getElementById('editMaterialPrice').value) || 0;
+  const newQty = parseFloat(document.getElementById('editMaterialQty').value) || 0;
+
+  if (!newName) {
+    alert('El nombre del material no puede estar vacío');
+    return;
+  }
+
+  if (!newUnit) {
+    alert('La unidad no puede estar vacía');
+    return;
+  }
+
+  // Update material in all services where it exists
+  const oldNameLower = editingMaterialName.toLowerCase();
+  let updated = false;
+
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    Object.entries(servicio.materiales).forEach(([matKey, mat]) => {
+      if (mat.nombre.toLowerCase() === oldNameLower) {
+        mat.nombre = newName;
+        mat.unidad = newUnit;
+        mat.precio_unitario = newPrice;
+        mat.cantidad_por_m2 = newQty;
+        updated = true;
+      }
+    });
+  });
+
+  if (updated) {
+    // Save to localStorage
+    localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
+
+    // Rebuild UI
+    buildAdminTabs();
+    buildMaterialsTable();
+    closeEditMaterialModal();
+
+    alert('✓ Material actualizado correctamente en todos los servicios');
+  }
 }
 
 // Confirmar nuevo servicio
