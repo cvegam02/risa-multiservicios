@@ -188,80 +188,73 @@
     /* Grid */
     .grid-cols-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
     }
 
-    /* Responsive Grid - Mobile first */
-    @media (max-width: 640px) {
+    @media (min-width: 640px) {
       .grid-cols-2 {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
     }
 
     /* Full width helper */
     .w-full { width: 100%; }
 
-    /* Responsive padding */
-    @media (max-width: 640px) {
-      .p-28 { padding: 16px; }
-      .p-24 { padding: 16px; }
-      .gap-32 { gap: 16px; }
-      .gap-20 { gap: 12px; }
+    /* Responsive Helpers */
+    .hide-mobile { display: none; }
+    .full-width { width: 100% !important; }
+    .flex-mobile-col { flex-direction: column; }
+
+    /* Responsive padding - Mobile first */
+    .p-28 { padding: 16px; }
+    .p-24 { padding: 16px; }
+    .gap-32 { gap: 16px; }
+    .gap-20 { gap: 12px; }
+
+    @media (min-width: 640px) {
+      .p-28 { padding: 28px; }
+      .p-24 { padding: 24px; }
+      .gap-32 { gap: 32px; }
+      .gap-20 { gap: 20px; }
     }
 
     /* ============ COMPONENT CLASSES ============ */
 
-    /* Buttons */
-    .btn-primary {
-      padding: 12px 20px;
-      background: var(--navy-700);
-      color: white;
+    /* Buttons - Mobile first */
+    .btn-primary, .btn-secondary, .btn-danger, .btn-success {
+      padding: 10px 16px;
+      font-size: 13px;
       border: none;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--navy-700);
+      color: white;
     }
 
     .btn-secondary {
-      padding: 12px 20px;
       background: var(--concrete-100);
       color: var(--ink);
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 14px;
     }
 
     .btn-danger {
-      padding: 12px 20px;
       background: var(--danger);
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 14px;
     }
 
     .btn-success {
-      padding: 12px 20px;
       background: var(--yellow-500);
       color: var(--ink);
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 14px;
     }
 
-    /* Mobile responsive buttons */
-    @media (max-width: 640px) {
+    @media (min-width: 640px) {
       .btn-primary, .btn-secondary, .btn-danger, .btn-success {
-        padding: 10px 16px;
-        font-size: 13px;
+        padding: 12px 20px;
+        font-size: 14px;
       }
     }
 
