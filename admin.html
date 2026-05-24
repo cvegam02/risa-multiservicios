@@ -341,6 +341,270 @@
       display: none;
     }
 
+    /* ===== Materials Grid (Cards) ===== */
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .material-card {
+      background: var(--white);
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 200ms;
+    }
+
+    .material-card:hover {
+      box-shadow: 0 8px 24px rgba(15, 30, 74, 0.12);
+      border-color: var(--navy-700);
+    }
+
+    .material-card__header {
+      background: linear-gradient(135deg, var(--navy-50) 0%, var(--concrete-50) 100%);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--concrete-200);
+    }
+
+    .material-card__icon {
+      font-size: 20px;
+    }
+
+    .material-card__delete {
+      background: none;
+      border: none;
+      color: var(--concrete-700);
+      cursor: pointer;
+      font-size: 20px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 150ms;
+      flex-shrink: 0;
+    }
+
+    .material-card__delete:hover {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .material-card__body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .material-card__body label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--concrete-700);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .material-card__body input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 500;
+      background: var(--concrete-50);
+      color: var(--ink);
+      transition: all 150ms;
+    }
+
+    .material-card__body input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .material-card__body input::placeholder {
+      color: var(--concrete-700);
+    }
+
+    .material-card__row {
+      display: grid;
+      grid-template-columns: 1.2fr 90px 1.2fr;
+      gap: 12px;
+    }
+
+    .add-material-btn {
+      width: 100%;
+      padding: 16px;
+      background: none;
+      border: 2px dashed var(--concrete-300);
+      border-radius: 12px;
+      color: var(--concrete-700);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 200ms;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      margin-top: 12px;
+    }
+
+    .add-material-btn:hover {
+      border-color: var(--yellow-500);
+      color: var(--navy-900);
+      background: rgba(251, 191, 36, 0.05);
+    }
+
+    /* New Service Bar */
+    .new-service-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--concrete-200);
+    }
+
+    .add-service-btn {
+      padding: 12px 24px;
+      background: var(--navy-900);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 200ms;
+      font-family: inherit;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .add-service-btn:hover {
+      transform: translateY(-2px);
+      background: var(--navy-800);
+      box-shadow: 0 4px 15px rgba(15, 30, 74, 0.2);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 74, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 300ms ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-box h3 {
+      margin: 0 0 24px;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--navy-900);
+      letter-spacing: -0.01em;
+    }
+
+    .modal-box label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--concrete-700);
+      margin-bottom: 10px;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 150ms;
+    }
+
+    .modal-box input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .modal-actions button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 200ms;
+    }
+
+    .modal-actions button:first-child {
+      background: var(--concrete-100);
+      color: var(--ink);
+    }
+
+    .modal-actions button:first-child:hover {
+      background: var(--concrete-200);
+    }
+
+    .modal-actions button:last-child {
+      background: linear-gradient(135deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
+      color: var(--ink);
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .modal-actions button:last-child:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+    }
+
     #loginSection {
       min-height: 400px;
       display: flex;
@@ -411,6 +675,9 @@
       </div>
 
       <div class="admin-tabs" id="adminTabs"></div>
+      <div class="new-service-bar">
+        <button class="add-service-btn" onclick="showNewServiceModal()">+ Nuevo servicio</button>
+      </div>
       <div id="adminContents"></div>
 
       <div class="admin-buttons">
@@ -424,6 +691,19 @@
 </section>
 
 <input type="file" id="importAdminInput" class="import-input" accept=".json" onchange="importAdminConfig(event)" />
+
+<!-- ============ NEW SERVICE MODAL ============ -->
+<div id="newServiceModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>Nuevo servicio</h3>
+    <label for="newServiceNombre">Nombre del servicio</label>
+    <input id="newServiceNombre" type="text" placeholder="Ej: Pisos de madera" />
+    <div class="modal-actions">
+      <button onclick="cancelNewService()">Cancelar</button>
+      <button onclick="confirmNewService()">Crear servicio</button>
+    </div>
+  </div>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
@@ -565,48 +845,70 @@ function buildAdminTabs() {
     contentDiv.className = `admin-content ${isFirst ? 'active' : ''}`;
     contentDiv.id = `admin-${serviceKey}`;
 
-    const tableHTML = `
-      <table class="material-table">
-        <thead>
-          <tr>
-            <th>Material</th>
-            <th>Cantidad/m²</th>
-            <th>Unidad</th>
-            <th>Precio ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
-            <tr>
-              <td data-label="Material"><span class="material-name">${escapeHtml(material.nombre)}</span></td>
-              <td data-label="Cantidad/m²">
+    const cardsHTML = `
+      <div class="materials-grid">
+        ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
+          <div class="material-card">
+            <div class="material-card__header">
+              <span class="material-card__icon">📦</span>
+              <button class="material-card__delete" onclick="removeMaterial('${serviceKey}','${materialKey}')" title="Eliminar material">✕</button>
+            </div>
+            <div class="material-card__body">
+              <div>
+                <label>Nombre</label>
                 <input
-                  type="number"
-                  step="0.01"
-                  value="${material.cantidad_por_m2}"
+                  type="text"
+                  value="${escapeHtml(material.nombre)}"
                   data-service="${serviceKey}"
                   data-material="${materialKey}"
-                  data-field="cantidad_por_m2"
+                  data-field="nombre"
+                  placeholder="Nombre del material"
                 />
-              </td>
-              <td data-label="Unidad"><span class="material-unit">${escapeHtml(material.unidad)}</span></td>
-              <td data-label="Precio ($)">
-                <input
-                  type="number"
-                  step="0.01"
-                  value="${material.precio_unitario}"
-                  data-service="${serviceKey}"
-                  data-material="${materialKey}"
-                  data-field="precio_unitario"
-                />
-              </td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+              </div>
+
+              <div class="material-card__row">
+                <div>
+                  <label>Cantidad/m²</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value="${material.cantidad_por_m2}"
+                    data-service="${serviceKey}"
+                    data-material="${materialKey}"
+                    data-field="cantidad_por_m2"
+                  />
+                </div>
+                <div>
+                  <label>Unidad</label>
+                  <input
+                    type="text"
+                    value="${escapeHtml(material.unidad)}"
+                    data-service="${serviceKey}"
+                    data-material="${materialKey}"
+                    data-field="unidad"
+                    placeholder="kg"
+                  />
+                </div>
+                <div>
+                  <label>Precio ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value="${material.precio_unitario}"
+                    data-service="${serviceKey}"
+                    data-material="${materialKey}"
+                    data-field="precio_unitario"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="add-material-btn" onclick="addMaterial('${serviceKey}')">+ Agregar material</button>
     `;
 
-    contentDiv.innerHTML = tableHTML;
+    contentDiv.innerHTML = cardsHTML;
     contentsContainer.appendChild(contentDiv);
 
     isFirst = false;
@@ -624,13 +926,19 @@ function switchAdminTab(serviceKey, e) {
 
 // Guardar configuración
 function saveAdminSettings() {
-  const inputs = document.querySelectorAll('.material-table input');
+  // Buscar inputs en cards de materiales
+  const inputs = document.querySelectorAll('.material-card__body input, .materials-grid input');
 
   inputs.forEach(input => {
     const serviceKey = input.dataset.service;
     const materialKey = input.dataset.material;
     const field = input.dataset.field;
-    const value = parseFloat(input.value);
+    let value = input.value;
+
+    // Convertir a número si es un campo numérico
+    if (field === 'cantidad_por_m2' || field === 'precio_unitario') {
+      value = parseFloat(value) || 0;
+    }
 
     if (adminMateriales[serviceKey] && adminMateriales[serviceKey].materiales[materialKey]) {
       adminMateriales[serviceKey].materiales[materialKey][field] = value;
@@ -686,6 +994,95 @@ function resetAdminDefaults() {
     localStorage.removeItem('risaMateriales');
     location.reload();
   }
+}
+
+// ===== NUEVAS FUNCIONES PARA CARDS =====
+
+// Agregar material a un servicio
+function addMaterial(serviceKey) {
+  const newKey = 'material_' + Date.now();
+  adminMateriales[serviceKey].materiales[newKey] = {
+    nombre: 'Nuevo material',
+    cantidad_por_m2: 0,
+    unidad: 'kg',
+    precio_unitario: 0
+  };
+  buildAdminTabs();
+  // Scroll al nuevo material (último card)
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.material-card');
+    if (cards.length > 0) {
+      cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100);
+}
+
+// Eliminar material
+function removeMaterial(serviceKey, materialKey) {
+  if (!confirm('¿Eliminar este material?')) return;
+
+  delete adminMateriales[serviceKey].materiales[materialKey];
+  buildAdminTabs();
+}
+
+// Mostrar modal de nuevo servicio
+function showNewServiceModal() {
+  document.getElementById('newServiceModal').classList.add('active');
+  document.getElementById('newServiceNombre').focus();
+}
+
+// Cancelar nuevo servicio
+function cancelNewService() {
+  document.getElementById('newServiceModal').classList.remove('active');
+  document.getElementById('newServiceNombre').value = '';
+}
+
+// Confirmar nuevo servicio
+function confirmNewService() {
+  const nombre = document.getElementById('newServiceNombre').value.trim();
+
+  if (!nombre) {
+    alert('Por favor ingresa un nombre para el servicio');
+    return;
+  }
+
+  // Generar una clave única a partir del nombre
+  const key = nombre.toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+
+  // Verificar que no exista
+  if (adminMateriales[key]) {
+    alert('Este servicio ya existe');
+    return;
+  }
+
+  // Crear nuevo servicio
+  adminMateriales[key] = {
+    nombre: nombre,
+    descripcion: '',
+    materiales: {}
+  };
+
+  // Reconstruir tabs y cerrar modal
+  buildAdminTabs();
+  cancelNewService();
+
+  // Activar la nueva tab
+  setTimeout(() => {
+    const newTab = document.querySelector(`.admin-tab:contains('${nombre}')`);
+    if (newTab) {
+      newTab.click();
+    } else {
+      // Si no encuentra por contiene, activar la última tab
+      const tabs = document.querySelectorAll('.admin-tab');
+      if (tabs.length > 0) {
+        tabs[tabs.length - 1].click();
+      }
+    }
+  }, 100);
+
+  alert('✓ Servicio creado correctamente');
 }
 </script>
 </body>
