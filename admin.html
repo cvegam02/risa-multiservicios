@@ -1590,7 +1590,8 @@
         <div class="brand__tag">Multiservicios</div>
       </div>
     </a>
-    <nav class="nav">
+    <button class="menu-toggle" onclick="toggleMobileMenu()" title="Menú">☰</button>
+    <nav class="nav mobile-closed">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html">Calculadora</a>
       <a href="admin.html" class="is-active">Admin</a>
@@ -1762,6 +1763,22 @@
 </footer>
 
 <script>
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const nav = document.querySelector('.nav');
+  nav?.classList.toggle('mobile-closed');
+}
+
+// Close menu when clicking a link
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('.nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.nav')?.classList.add('mobile-closed');
+    });
+  });
+});
+
 let adminMateriales = {};
 
 // Cargar datos al abrir

@@ -12,7 +12,9 @@
       "Bash(pkill -f \"http.server\")",
       "Bash(python3 -m http.server 8000)",
       "Bash(python3 -m http.server 8000 > /tmp/server.log 2>&1 & *)",
-      "Bash(awk '{print $9, \"\\(\" $5 \" bytes\\)\"}')"
+      "Bash(awk '{print $9, \"\\(\" $5 \" bytes\\)\"}')",
+      "Bash(curl -s http://localhost:8000/admin.html)",
+      "Bash(grep -E \"\\\\.\\(html|json|css|js\\)$\")"
     ],
     "additionalDirectories": [
       "/tmp"

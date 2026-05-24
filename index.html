@@ -21,7 +21,8 @@
         <div class="brand__tag">Multiservicios</div>
       </div>
     </a>
-    <nav class="nav">
+    <button class="menu-toggle" onclick="toggleMobileMenu()" title="Menú">☰</button>
+    <nav class="nav mobile-closed">
       <a href="index.html">Inicio</a>
       <a href="calculadora.html">Calculadora</a>
       <a href="admin.html">Admin</a>
@@ -518,6 +519,24 @@
     <div style="letter-spacing:0.18em;font-weight:800;color:var(--yellow-500);">TRABAJO · FIRME · BIEN HECHO</div>
   </div>
 </footer>
+
+<script>
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const nav = document.querySelector('.nav');
+  nav?.classList.toggle('mobile-closed');
+}
+
+// Close menu when clicking a link
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('.nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.nav')?.classList.add('mobile-closed');
+    });
+  });
+});
+</script>
 
 </body>
 </html>
