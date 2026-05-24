@@ -40,6 +40,129 @@
       flex-shrink: 0;
     }
 
+    /* Main Admin Section Tabs */
+    .admin-main-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--concrete-200);
+      padding: 0;
+    }
+
+    .admin-main-tab {
+      padding: 16px 24px;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--concrete-700);
+      cursor: pointer;
+      transition: all 200ms;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      position: relative;
+    }
+
+    .admin-main-tab:hover {
+      color: var(--navy-900);
+      background: rgba(251, 191, 36, 0.05);
+    }
+
+    .admin-main-tab.active {
+      color: var(--navy-900);
+      border-bottom-color: var(--yellow-500);
+      font-weight: 800;
+    }
+
+    .admin-main-content {
+      display: none;
+    }
+
+    .admin-main-content.active {
+      display: block;
+    }
+
+    /* Materials Table */
+    .materials-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--concrete-200);
+      border-radius: 12px;
+      background: var(--white);
+    }
+
+    .materials-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .materials-table thead {
+      background: linear-gradient(135deg, var(--navy-50) 0%, var(--navy-50) 100%);
+      position: sticky;
+      top: 0;
+    }
+
+    .materials-table th {
+      padding: 16px;
+      text-align: left;
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 2px solid var(--concrete-200);
+      white-space: nowrap;
+    }
+
+    .materials-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--concrete-100);
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .materials-table tbody tr {
+      transition: all 150ms;
+    }
+
+    .materials-table tbody tr:hover {
+      background: rgba(251, 191, 36, 0.06);
+    }
+
+    .material-name {
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .material-unit {
+      color: var(--concrete-700);
+      font-weight: 500;
+    }
+
+    .material-price {
+      font-weight: 600;
+      color: var(--navy-900);
+    }
+
+    .material-services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .service-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--navy-700) 0%, var(--navy-900) 100%);
+      color: var(--white);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
     /* Login Section - Moderno */
     .login-box {
       max-width: 420px;
@@ -786,18 +909,49 @@
     <div class="admin-section">
       <h3>Configurar Materiales y Precios</h3>
 
-      <div class="info-box">
-        💡 Edita los valores de materiales aquí. Los cambios se guardarán automáticamente y se aplicarán a todas las calculadoras.
+      <div class="admin-main-tabs">
+        <button class="admin-main-tab active" onclick="switchMainAdminTab('servicios')">📋 Servicios</button>
+        <button class="admin-main-tab" onclick="switchMainAdminTab('materiales')">📊 Materiales</button>
       </div>
 
-      <div class="admin-layout">
-        <div class="admin-sidebar">
-          <div class="admin-tabs" id="adminTabs"></div>
-          <div class="new-service-bar">
-            <button class="add-service-btn" onclick="showNewServiceModal()">+ Servicio</button>
-          </div>
+      <!-- SERVICIOS TAB -->
+      <div id="serviciosContent" class="admin-main-content active">
+        <div class="info-box">
+          💡 Edita los valores de materiales aquí. Los cambios se guardarán automáticamente y se aplicarán a todas las calculadoras.
         </div>
-        <div class="admin-content-area" id="adminContents"></div>
+
+        <div class="admin-layout">
+          <div class="admin-sidebar">
+            <div class="admin-tabs" id="adminTabs"></div>
+            <div class="new-service-bar">
+              <button class="add-service-btn" onclick="showNewServiceModal()">+ Servicio</button>
+            </div>
+          </div>
+          <div class="admin-content-area" id="adminContents"></div>
+        </div>
+      </div>
+
+      <!-- MATERIALES TAB -->
+      <div id="materialesContent" class="admin-main-content">
+        <div class="info-box">
+          📦 Catálogo completo de materiales. Visualiza todos los materiales disponibles y en qué servicios se utilizan.
+        </div>
+
+        <div class="materials-table-wrapper">
+          <table class="materials-table">
+            <thead>
+              <tr>
+                <th>Material</th>
+                <th>Unidad</th>
+                <th>Precio Unit.</th>
+                <th>Cantidad/m²</th>
+                <th>Servicios</th>
+              </tr>
+            </thead>
+            <tbody id="materialsTableBody">
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="admin-buttons">
@@ -928,6 +1082,7 @@ function showAdminPanel() {
   document.getElementById('loginSection').style.display = 'none';
   document.getElementById('adminSection').style.display = 'block';
   buildAdminTabs();
+  buildMaterialsTable();
 }
 
 // Escape HTML special characters to prevent XSS
@@ -1044,6 +1199,71 @@ function switchAdminTab(serviceKey, e) {
   document.getElementById(`admin-${serviceKey}`).classList.add('active');
 }
 
+// Cambiar tab principal (Servicios / Materiales)
+function switchMainAdminTab(tabName) {
+  document.querySelectorAll('.admin-main-tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.admin-main-content').forEach(content => content.classList.remove('active'));
+
+  document.querySelector(`[onclick="switchMainAdminTab('${tabName}')"]`).classList.add('active');
+  document.getElementById(`${tabName}Content`).classList.add('active');
+
+  // Reconstruir tabla si es necesario
+  if (tabName === 'materiales') {
+    buildMaterialsTable();
+  }
+}
+
+// Construir tabla de materiales
+function buildMaterialsTable() {
+  const tbody = document.getElementById('materialsTableBody');
+  if (!tbody) return;
+
+  // Recolectar todos los materiales únicos
+  const materialsMap = new Map();
+
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    Object.entries(servicio.materiales).forEach(([materialKey, material]) => {
+      const key = material.nombre.toLowerCase();
+
+      if (!materialsMap.has(key)) {
+        materialsMap.set(key, {
+          nombre: material.nombre,
+          unidad: material.unidad,
+          precio_unitario: material.precio_unitario,
+          cantidad_por_m2: material.cantidad_por_m2,
+          servicios: []
+        });
+      }
+
+      const item = materialsMap.get(key);
+      if (!item.servicios.includes(servicio.nombre)) {
+        item.servicios.push(servicio.nombre);
+      }
+    });
+  });
+
+  // Ordenar por nombre
+  const sortedMaterials = Array.from(materialsMap.values())
+    .sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+  // Generar HTML
+  tbody.innerHTML = sortedMaterials.map(material => `
+    <tr>
+      <td class="material-name">${escapeHtml(material.nombre)}</td>
+      <td class="material-unit">${escapeHtml(material.unidad)}</td>
+      <td class="material-price">$${material.precio_unitario.toFixed(2)}</td>
+      <td>${material.cantidad_por_m2}</td>
+      <td>
+        <div class="material-services">
+          ${material.servicios.map(service => `
+            <span class="service-badge">${escapeHtml(service)}</span>
+          `).join('')}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
 // Guardar configuración
 function saveAdminSettings() {
   // Buscar inputs en cards de materiales
@@ -1099,6 +1319,7 @@ function importAdminConfig(event) {
       adminMateriales = imported;
       localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
       buildAdminTabs();
+      buildMaterialsTable();
       alert('✓ Configuración cargada correctamente');
     } catch (error) {
       alert('❌ Error al cargar el archivo. Verifica que sea un JSON válido.');
@@ -1128,6 +1349,7 @@ function addMaterial(serviceKey) {
     precio_unitario: 0
   };
   buildAdminTabs();
+  buildMaterialsTable();
   // Scroll al nuevo material (último card)
   setTimeout(() => {
     const cards = document.querySelectorAll('.material-card');
@@ -1143,6 +1365,7 @@ function removeMaterial(serviceKey, materialKey) {
 
   delete adminMateriales[serviceKey].materiales[materialKey];
   buildAdminTabs();
+  buildMaterialsTable();
 }
 
 // Mostrar modal de nuevo servicio
@@ -1186,6 +1409,7 @@ function confirmNewService() {
 
   // Reconstruir tabs y cerrar modal
   buildAdminTabs();
+  buildMaterialsTable();
   cancelNewService();
 
   // Activar la nueva tab
