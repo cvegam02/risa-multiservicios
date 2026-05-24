@@ -1015,19 +1015,92 @@
     }
 
     /* Responsive Design */
+    @media (max-width: 1024px) {
+      .admin-container {
+        padding: 40px 20px;
+      }
+
+      .admin-layout {
+        grid-template-columns: 200px 1fr;
+        gap: 16px;
+      }
+
+      .materials-table {
+        font-size: 12px;
+      }
+
+      .materials-table th,
+      .materials-table td {
+        padding: 12px 10px;
+      }
+    }
+
     @media (max-width: 768px) {
+      .admin-container {
+        max-width: 100%;
+        padding: 24px 16px;
+      }
+
+      .admin-section {
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .admin-section h3 {
+        font-size: 18px;
+        margin-bottom: 16px;
+      }
+
+      .info-box {
+        font-size: 12px;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+      }
+
+      /* Main Tabs */
+      .admin-main-tabs {
+        flex-direction: column;
+        border-bottom: none;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .admin-main-tab {
+        padding: 12px 16px;
+        font-size: 12px;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+        margin-bottom: 0;
+        text-align: left;
+        background: rgba(251, 191, 36, 0.05);
+        border-radius: 8px;
+      }
+
+      .admin-main-tab:hover {
+        background: rgba(251, 191, 36, 0.12);
+      }
+
+      .admin-main-tab.active {
+        border-left-color: var(--yellow-500);
+        border-bottom-color: transparent;
+        background: rgba(251, 191, 36, 0.15);
+        font-weight: 800;
+      }
+
+      /* Layout */
       .admin-layout {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 12px;
       }
 
       .admin-sidebar {
         max-height: auto;
         padding: 12px;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 8px;
-        border-radius: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+        border-radius: 8px;
+        overflow-y: visible;
       }
 
       .admin-sidebar::before {
@@ -1038,17 +1111,19 @@
         flex-direction: row;
         flex-wrap: wrap;
         width: 100%;
+        gap: 4px;
       }
 
       .admin-tab {
-        padding: 10px 12px;
-        font-size: 12px;
+        padding: 8px 10px;
+        font-size: 11px;
         border-left: none;
         border-bottom: 2px solid transparent;
         margin-bottom: 0;
         border-radius: 6px;
-        background: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.7);
         text-transform: capitalize;
+        letter-spacing: normal;
       }
 
       .admin-tab:hover {
@@ -1061,6 +1136,7 @@
         border-left-color: transparent;
         border-bottom-color: var(--yellow-500);
         background: rgba(251, 191, 36, 0.15);
+        font-weight: 700;
       }
 
       .new-service-bar {
@@ -1069,6 +1145,258 @@
         border-top: none !important;
         grid-column: 1 / -1;
         justify-content: center;
+      }
+
+      .admin-content-area {
+        padding: 16px;
+      }
+
+      /* Materials Grid */
+      .materials-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .material-card {
+        border-radius: 12px;
+      }
+
+      .material-card__header {
+        padding: 12px;
+      }
+
+      .material-card__body {
+        padding: 14px;
+        gap: 12px;
+      }
+
+      .material-card__row {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+      }
+
+      .material-card__body label {
+        font-size: 10px;
+      }
+
+      .material-card__body input {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .add-material-btn {
+        padding: 12px;
+        font-size: 12px;
+      }
+
+      /* Materials Table */
+      .materials-table-wrapper {
+        border-radius: 8px;
+      }
+
+      .materials-table {
+        font-size: 11px;
+      }
+
+      .materials-table th {
+        padding: 10px 8px;
+        font-size: 10px;
+      }
+
+      .materials-table td {
+        padding: 10px 8px;
+        font-size: 11px;
+      }
+
+      .material-services {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .service-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+      }
+
+      /* Buttons */
+      .admin-buttons {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .admin-btn {
+        padding: 12px 16px;
+        font-size: 12px;
+        min-width: auto;
+        flex: 1;
+      }
+
+      .logout-zone {
+        margin-bottom: 16px;
+      }
+
+      /* Login */
+      .login-box {
+        max-width: 90%;
+        margin: 60px auto;
+        padding: 32px 24px;
+      }
+
+      .login-box h2 {
+        font-size: 24px;
+      }
+
+      .login-field {
+        margin-bottom: 16px;
+      }
+
+      .login-field input {
+        padding: 14px;
+        font-size: 14px;
+      }
+
+      .login-btn {
+        padding: 14px;
+        font-size: 13px;
+      }
+
+      /* Modals */
+      .modal-box,
+      .material-edit-box {
+        width: 95%;
+        max-width: 100%;
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+
+      .modal-box h3,
+      .material-edit-box h3 {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+
+      .modal-box input,
+      .material-edit-field input {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      .modal-actions,
+      .material-edit-actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+      }
+
+      .modal-actions button,
+      .material-edit-actions button {
+        width: 100%;
+        padding: 12px 16px;
+      }
+
+      /* Main tabs alignment */
+      .admin-main-tabs {
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-container {
+        padding: 16px 12px;
+      }
+
+      .admin-section {
+        padding: 16px;
+      }
+
+      .admin-section h3 {
+        font-size: 16px;
+        gap: 8px;
+      }
+
+      .admin-section h3::before {
+        width: 3px;
+        height: 22px;
+      }
+
+      .info-box {
+        font-size: 11px;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+      }
+
+      .admin-sidebar {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        padding: 8px;
+        gap: 4px;
+      }
+
+      .admin-tab {
+        padding: 6px 8px;
+        font-size: 10px;
+      }
+
+      .material-card__title {
+        font-size: 12px;
+        gap: 8px;
+      }
+
+      .material-card__icon {
+        font-size: 16px;
+      }
+
+      .material-card__row {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+      }
+
+      .material-card__body input {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .materials-table th,
+      .materials-table td {
+        padding: 8px 6px;
+        font-size: 10px;
+      }
+
+      .material-services {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 3px;
+      }
+
+      .service-badge {
+        padding: 2px 6px;
+        font-size: 9px;
+      }
+
+      .admin-btn {
+        padding: 10px 12px;
+        font-size: 11px;
+      }
+
+      .modal-box,
+      .material-edit-box {
+        padding: 20px 16px;
+      }
+
+      .modal-box h3,
+      .material-edit-box h3 {
+        font-size: 18px;
+        margin-bottom: 14px;
+      }
+
+      .modal-box label,
+      .material-edit-field label {
+        font-size: 11px;
+      }
+
+      .add-material-btn {
+        padding: 10px;
+        font-size: 11px;
       }
     }
   </style>
