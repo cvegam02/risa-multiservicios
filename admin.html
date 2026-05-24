@@ -234,20 +234,98 @@
       box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
     }
 
-    .material-edit-services {
+    .material-services-section {
       background: var(--concrete-50);
       border: 1px solid var(--concrete-200);
       border-radius: 10px;
-      padding: 12px;
+      padding: 14px;
       font-size: 13px;
       color: var(--concrete-700);
     }
 
-    .material-edit-services strong {
+    .material-services-section strong {
       display: block;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       color: var(--navy-900);
+      font-size: 12px;
+    }
+
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .service-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--concrete-200);
+    }
+
+    .service-item-name {
+      font-weight: 600;
+      color: var(--navy-900);
+    }
+
+    .service-item-btn {
+      background: #fee2e2;
+      color: var(--danger);
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 150ms;
+    }
+
+    .service-item-btn:hover {
+      background: #fecaca;
+    }
+
+    .add-service-field {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-service-field select {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--white);
+      cursor: pointer;
+      transition: all 150ms;
+    }
+
+    .add-service-field select:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .add-service-field button {
+      padding: 8px 12px;
+      background: var(--navy-900);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 150ms;
+    }
+
+    .add-service-field button:hover {
+      background: var(--navy-800);
     }
 
     .material-edit-actions {
@@ -1127,9 +1205,17 @@
         <label for="editMaterialQty">Cantidad por m²</label>
         <input id="editMaterialQty" type="number" step="0.01" />
       </div>
-      <div class="material-edit-services">
-        <strong>Se actualizará en estos servicios:</strong>
-        <div id="editMaterialServices"></div>
+      <div class="material-services-section">
+        <strong>Servicios donde se usa este material:</strong>
+        <div class="services-list" id="currentServicesContainer"></div>
+
+        <strong style="margin-top: 12px;">Agregar a otro servicio:</strong>
+        <div class="add-service-field">
+          <select id="availableServicesSelect">
+            <option value="">Selecciona un servicio...</option>
+          </select>
+          <button onclick="addServiceToMaterial()">+ Agregar</button>
+        </div>
       </div>
     </div>
     <div class="material-edit-actions">
@@ -1557,16 +1643,21 @@ function cancelNewService() {
 
 let editingMaterialName = '';
 let editingMaterialServices = [];
+let selectedServicesToAdd = [];
 
 function openEditMaterialModal(materialName, unit, price, qty) {
   editingMaterialName = materialName;
   editingMaterialServices = [];
+  selectedServicesToAdd = [];
 
   // Find all services that use this material
   Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
     Object.entries(servicio.materiales).forEach(([matKey, mat]) => {
       if (mat.nombre.toLowerCase() === materialName.toLowerCase()) {
-        editingMaterialServices.push(servicio.nombre);
+        editingMaterialServices.push({
+          key: serviceKey,
+          nombre: servicio.nombre
+        });
       }
     });
   });
@@ -1577,15 +1668,93 @@ function openEditMaterialModal(materialName, unit, price, qty) {
   document.getElementById('editMaterialPrice').value = price;
   document.getElementById('editMaterialQty').value = qty;
 
-  // Show services
-  const servicesDiv = document.getElementById('editMaterialServices');
-  servicesDiv.innerHTML = editingMaterialServices.map(service =>
-    `<div>• ${escapeHtml(service)}</div>`
-  ).join('');
+  // Show current services
+  renderCurrentServices();
+
+  // Populate available services dropdown
+  const select = document.getElementById('availableServicesSelect');
+  const currentServiceKeys = editingMaterialServices.map(s => s.key);
+  select.innerHTML = '<option value="">Selecciona un servicio...</option>';
+
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    if (!currentServiceKeys.includes(serviceKey)) {
+      const option = document.createElement('option');
+      option.value = serviceKey;
+      option.textContent = servicio.nombre;
+      select.appendChild(option);
+    }
+  });
 
   // Show modal
   document.getElementById('editMaterialModal').classList.add('active');
   document.getElementById('editMaterialName').focus();
+}
+
+function renderCurrentServices() {
+  const container = document.getElementById('currentServicesContainer');
+  if (editingMaterialServices.length === 0) {
+    container.innerHTML = '<div style="color: var(--concrete-700); font-size: 13px;">No se usa en ningún servicio aún</div>';
+  } else {
+    container.innerHTML = editingMaterialServices.map((service, index) => `
+      <div class="service-item">
+        <span class="service-item-name">${escapeHtml(service.nombre)}</span>
+        <button class="service-item-btn" onclick="removeServiceFromMaterial(${index})">✕ Remover</button>
+      </div>
+    `).join('');
+  }
+}
+
+function removeServiceFromMaterial(index) {
+  editingMaterialServices.splice(index, 1);
+  renderCurrentServices();
+
+  // Update available services dropdown
+  const select = document.getElementById('availableServicesSelect');
+  const currentServiceKeys = editingMaterialServices.map(s => s.key);
+  const removedService = adminMateriales[Object.keys(adminMateriales)[index]];
+
+  // Rebuild dropdown
+  select.innerHTML = '<option value="">Selecciona un servicio...</option>';
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    if (!currentServiceKeys.includes(serviceKey) && !selectedServicesToAdd.includes(serviceKey)) {
+      const option = document.createElement('option');
+      option.value = serviceKey;
+      option.textContent = servicio.nombre;
+      select.appendChild(option);
+    }
+  });
+}
+
+function addServiceToMaterial() {
+  const select = document.getElementById('availableServicesSelect');
+  const serviceKey = select.value;
+
+  if (!serviceKey) {
+    alert('Selecciona un servicio');
+    return;
+  }
+
+  const servicio = adminMateriales[serviceKey];
+  editingMaterialServices.push({
+    key: serviceKey,
+    nombre: servicio.nombre
+  });
+  selectedServicesToAdd.push(serviceKey);
+
+  renderCurrentServices();
+
+  // Update dropdown
+  const currentServiceKeys = editingMaterialServices.map(s => s.key);
+  select.innerHTML = '<option value="">Selecciona un servicio...</option>';
+  Object.entries(adminMateriales).forEach(([key, service]) => {
+    if (!currentServiceKeys.includes(key)) {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = service.nombre;
+      select.appendChild(option);
+    }
+  });
+  select.value = '';
 }
 
 function closeEditMaterialModal() {
@@ -1610,10 +1779,25 @@ function saveEditedMaterial() {
     return;
   }
 
-  // Update material in all services where it exists
   const oldNameLower = editingMaterialName.toLowerCase();
-  let updated = false;
+  const currentServiceKeys = editingMaterialServices.map(s => s.key);
 
+  // 1. Remove material from services that are no longer selected
+  Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
+    const materialsToDelete = [];
+    Object.entries(servicio.materiales).forEach(([matKey, mat]) => {
+      if (mat.nombre.toLowerCase() === oldNameLower) {
+        if (!currentServiceKeys.includes(serviceKey)) {
+          materialsToDelete.push(matKey);
+        }
+      }
+    });
+    materialsToDelete.forEach(matKey => {
+      delete servicio.materiales[matKey];
+    });
+  });
+
+  // 2. Update material in current services
   Object.entries(adminMateriales).forEach(([serviceKey, servicio]) => {
     Object.entries(servicio.materiales).forEach(([matKey, mat]) => {
       if (mat.nombre.toLowerCase() === oldNameLower) {
@@ -1621,22 +1805,30 @@ function saveEditedMaterial() {
         mat.unidad = newUnit;
         mat.precio_unitario = newPrice;
         mat.cantidad_por_m2 = newQty;
-        updated = true;
       }
     });
   });
 
-  if (updated) {
-    // Save to localStorage
-    localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
+  // 3. Add material to newly selected services
+  selectedServicesToAdd.forEach(serviceKey => {
+    const newKey = 'material_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    adminMateriales[serviceKey].materiales[newKey] = {
+      nombre: newName,
+      unidad: newUnit,
+      precio_unitario: newPrice,
+      cantidad_por_m2: newQty
+    };
+  });
 
-    // Rebuild UI
-    buildAdminTabs();
-    buildMaterialsTable();
-    closeEditMaterialModal();
+  // Save to localStorage
+  localStorage.setItem('risaMateriales', JSON.stringify(adminMateriales));
 
-    alert('✓ Material actualizado correctamente en todos los servicios');
-  }
+  // Rebuild UI
+  buildAdminTabs();
+  buildMaterialsTable();
+  closeEditMaterialModal();
+
+  alert('✓ Material actualizado correctamente');
 }
 
 // Confirmar nuevo servicio
