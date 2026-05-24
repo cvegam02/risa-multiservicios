@@ -263,12 +263,36 @@ function resetToDefaults() {
   }
 }
 
-// Descargar como JSON
-function downloadJSON() {
+// Descargar como PDF
+async function downloadPDF() {
   if (!window.currentCalcData) {
     alert('Por favor realiza un cálculo primero');
     return;
   }
+
+  // Cargar jsPDF si no está disponible
+  if (!window.jspdf) {
+    try {
+      await new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js';
+        script.onload = resolve;
+        script.onerror = resolve;
+        document.head.appendChild(script);
+      });
+    } catch (e) {
+      alert('Error al cargar la librería PDF');
+      return;
+    }
+  }
+
+  if (!window.jspdf) {
+    alert('Error: no se puede cargar la librería PDF. Intenta de nuevo.');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
   const data = {
     ...window.currentCalcData,
@@ -277,16 +301,107 @@ function downloadJSON() {
     contacto: '662 121 0904'
   };
 
-  const dataStr = JSON.stringify(data, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `presupuesto-${data.servicio.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  let yPosition = 20;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 20;
+  const contentWidth = pageWidth - 2 * margin;
+
+  // Header
+  doc.setFontSize(24);
+  doc.setFont(undefined, 'bold');
+  doc.text('RISA Multiservicios', margin, yPosition);
+  yPosition += 10;
+
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'normal');
+  doc.text('Presupuesto de Materiales', margin, yPosition);
+  yPosition += 8;
+
+  // Separator
+  doc.setDrawColor(200);
+  doc.line(margin, yPosition, pageWidth - margin, yPosition);
+  yPosition += 8;
+
+  // Info section
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('Información del Presupuesto:', margin, yPosition);
+  yPosition += 6;
+
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  const info = [
+    `Fecha: ${data.fecha}`,
+    `Servicio: ${data.servicio}`,
+    `Área: ${data.area} m²`,
+    `Contacto: ${data.contacto}`
+  ];
+
+  info.forEach(line => {
+    doc.text(line, margin + 5, yPosition);
+    yPosition += 5;
+  });
+
+  yPosition += 4;
+
+  // Materials section
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('Materiales Necesarios:', margin, yPosition);
+  yPosition += 6;
+
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(8);
+
+  // Table headers
+  doc.setFont(undefined, 'bold');
+  doc.text('Material', margin + 5, yPosition);
+  doc.text('Cantidad', margin + 90, yPosition);
+  doc.text('Unidad', margin + 130, yPosition);
+  doc.text('P. Unitario', margin + 160, yPosition);
+  yPosition += 5;
+
+  // Table content
+  doc.setFont(undefined, 'normal');
+  Object.entries(data.materiales).forEach(([key, material]) => {
+    if (yPosition > pageHeight - 40) {
+      doc.addPage();
+      yPosition = 20;
+    }
+
+    doc.text(material.nombre, margin + 5, yPosition);
+    doc.text(material.cantidad.toFixed(2), margin + 90, yPosition);
+    doc.text(material.unidad, margin + 130, yPosition);
+    doc.text(`$${material.precio_unitario.toFixed(2)}`, margin + 160, yPosition);
+    yPosition += 5;
+  });
+
+  yPosition += 6;
+
+  // Summary section
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('Resumen:', margin, yPosition);
+  yPosition += 6;
+
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  const total = data.total;
+  const costPerM2 = total / data.area;
+
+  doc.text(`Costo total de materiales: $${total.toLocaleString('es-MX', {minimumFractionDigits: 2})}`, margin + 5, yPosition);
+  yPosition += 5;
+  doc.text(`Costo por m²: $${costPerM2.toLocaleString('es-MX', {minimumFractionDigits: 2})}`, margin + 5, yPosition);
+
+  // Footer
+  doc.setFontSize(7);
+  doc.setFont(undefined, 'italic');
+  doc.text('Este presupuesto está basado en estándares de construcción mexicana.', margin, pageHeight - 10);
+
+  // Download
+  const filename = `presupuesto-${data.servicio.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.pdf`;
+  doc.save(filename);
 }
 
 // Limpiar calculadora
