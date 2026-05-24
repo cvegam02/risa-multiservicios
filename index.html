@@ -343,16 +343,16 @@
       <p>Déjanos tus datos y te llamamos en menos de 24 horas.</p>
 
       <div class="field">
-        <label>Nombre completo</label>
-        <input type="text" placeholder="Tu nombre" required />
+        <label for="contactName">Nombre completo</label>
+        <input id="contactName" type="text" placeholder="Tu nombre" required />
       </div>
       <div class="field">
-        <label>Teléfono</label>
-        <input type="tel" placeholder="10 dígitos" required />
+        <label for="contactPhone">Teléfono</label>
+        <input id="contactPhone" type="tel" placeholder="10 dígitos" required />
       </div>
       <div class="field">
-        <label>Servicio que necesitas</label>
-        <select required>
+        <label for="contactService">Servicio que necesitas</label>
+        <select id="contactService" required>
           <option value="">Selecciona uno...</option>
           <option>Multiservicios Residenciales</option>
           <option>Impermeabilización</option>
@@ -366,8 +366,8 @@
         </select>
       </div>
       <div class="field">
-        <label>Cuéntanos el detalle</label>
-        <textarea placeholder="Ej: necesito impermeabilizar mi cochera de 25 m²..."></textarea>
+        <label for="contactDetails">Cuéntanos el detalle</label>
+        <textarea id="contactDetails" placeholder="Ej: necesito impermeabilizar mi cochera de 25 m²..."></textarea>
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
         Enviar solicitud

@@ -339,7 +339,7 @@
     <div class="login-box">
       <h2>🔐 Panel de Administración</h2>
       <div class="login-field">
-        <label>Contraseña</label>
+        <label for="passwordInput">Contraseña</label>
         <input type="password" id="passwordInput" placeholder="Ingresa la contraseña" onkeypress="if(event.key==='Enter') adminLogin()" />
       </div>
       <button class="login-btn" onclick="adminLogin()">Acceder</button>
@@ -438,7 +438,14 @@ function checkAdminAuth() {
 // Login
 function adminLogin() {
   const password = document.getElementById('passwordInput').value;
-  const correctPassword = 'risa2024'; // Cambiar esto por una contraseña más segura
+  // SECURITY WARNING: This is a client-side password check for development only.
+  // This is NOT secure for production. Before deploying:
+  // 1. Move authentication to a backend server
+  // 2. Use HTTP Basic Auth at the reverse proxy level (nginx, Cloudflare, etc.)
+  // 3. Implement proper session tokens issued by a server
+  // Client-side password validation can be bypassed by opening DevTools and calling:
+  // sessionStorage.setItem('risaAdminAuth', 'true')
+  const correctPassword = 'risa2024';
 
   if (password === correctPassword) {
     sessionStorage.setItem('risaAdminAuth', 'true');
@@ -470,6 +477,19 @@ function showAdminPanel() {
   buildAdminTabs();
 }
 
+// Escape HTML special characters to prevent XSS
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return str.replace(/[&<>"']/g, char => map[char]);
+}
+
 // Construir tabs
 function buildAdminTabs() {
   const tabsContainer = document.getElementById('adminTabs');
@@ -484,7 +504,7 @@ function buildAdminTabs() {
     const tabBtn = document.createElement('button');
     tabBtn.className = `admin-tab ${isFirst ? 'active' : ''}`;
     tabBtn.textContent = servicio.nombre;
-    tabBtn.onclick = () => switchAdminTab(serviceKey);
+    tabBtn.onclick = (e) => switchAdminTab(serviceKey, e);
     tabsContainer.appendChild(tabBtn);
 
     // Content
@@ -505,7 +525,7 @@ function buildAdminTabs() {
         <tbody>
           ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
             <tr>
-              <td data-label="Material"><span class="material-name">${material.nombre}</span></td>
+              <td data-label="Material"><span class="material-name">${escapeHtml(material.nombre)}</span></td>
               <td data-label="Cantidad/m²">
                 <input
                   type="number"
@@ -516,7 +536,7 @@ function buildAdminTabs() {
                   data-field="cantidad_por_m2"
                 />
               </td>
-              <td data-label="Unidad"><span class="material-unit">${material.unidad}</span></td>
+              <td data-label="Unidad"><span class="material-unit">${escapeHtml(material.unidad)}</span></td>
               <td data-label="Precio ($)">
                 <input
                   type="number"
@@ -541,11 +561,11 @@ function buildAdminTabs() {
 }
 
 // Cambiar tab
-function switchAdminTab(serviceKey) {
+function switchAdminTab(serviceKey, e) {
   document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.admin-content').forEach(content => content.classList.remove('active'));
 
-  event.target.classList.add('active');
+  e.currentTarget.classList.add('active');
   document.getElementById(`admin-${serviceKey}`).classList.add('active');
 }
 

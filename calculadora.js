@@ -1,6 +1,19 @@
 let servicios = {};
 let materialesCustom = {};
 
+// Escape HTML special characters to prevent XSS
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return str.replace(/[&<>"']/g, char => map[char]);
+}
+
 // Cargar datos iniciales
 document.addEventListener('DOMContentLoaded', async () => {
   await loadMateriales();
@@ -12,11 +25,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadMateriales() {
   try {
     const response = await fetch('materiales.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     servicios = data.servicios;
     materialesCustom = JSON.parse(JSON.stringify(data.servicios)); // Copia profunda
   } catch (error) {
-    console.error('Error cargando materiales:', error);
+    servicios = {};
+    materialesCustom = {};
   }
 }
 
@@ -101,10 +116,10 @@ function displayResults(nombreServicio, resultados, totalCosto, area) {
       <div class="materiales-list">
         ${Object.entries(resultados).map(([key, material]) => `
           <div class="material-item">
-            <div class="material-item__name">${material.nombre}</div>
+            <div class="material-item__name">${escapeHtml(material.nombre)}</div>
             <div class="material-item__qty">
               <span class="material-item__value">${material.cantidad.toFixed(2)}</span>
-              <span class="material-item__unit">${material.unidad}</span>
+              <span class="material-item__unit">${escapeHtml(material.unidad)}</span>
             </div>
           </div>
         `).join('')}
@@ -117,7 +132,7 @@ function displayResults(nombreServicio, resultados, totalCosto, area) {
       <h4>💰 Presupuesto estimado</h4>
       <div class="summary-row">
         <span class="label">Servicio</span>
-        <span class="value">${nombreServicio}</span>
+        <span class="value">${escapeHtml(nombreServicio)}</span>
       </div>
       <div class="summary-row">
         <span class="label">Área</span>
@@ -235,7 +250,7 @@ function loadCustomSettings() {
     try {
       materialesCustom = JSON.parse(saved);
     } catch (error) {
-      console.error('Error cargando configuración guardada:', error);
+      localStorage.removeItem('risaMateriales');
     }
   }
 }
