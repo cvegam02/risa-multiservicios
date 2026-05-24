@@ -58,20 +58,20 @@ function renderMaterialsTab() {
   if (!container) return;
 
   let html = `
-    <div class="material-table">
+    <div class="admin-material-table">
   `;
 
   Object.entries(materiales).forEach(([key, mat]) => {
     html += `
-      <div class="material-row">
-        <div class="flex-between">
+      <div class="admin-material-row">
+        <div class="admin-flex-between">
           <div>
-            <div class="material-name">${escapeHtml(mat.nombre)}</div>
-            <div class="material-meta">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
+            <div class="admin-material-name">${escapeHtml(mat.nombre)}</div>
+            <div class="admin-material-meta">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
           </div>
           <div class="btn-row">
-            <button onclick="editMaterialModal('${escapeHtml(key)}')" class="btn-primary">Editar</button>
-            <button onclick="deleteMaterial('${escapeHtml(key)}')" class="btn-danger">Eliminar</button>
+            <button onclick="editMaterialModal('${escapeHtml(key)}')" class="admin-btn-primary">Editar</button>
+            <button onclick="deleteMaterial('${escapeHtml(key)}')" class="admin-btn-danger">Eliminar</button>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ function renderMaterialsTab() {
 
   html += `
     </div>
-    <button onclick="addMaterialModal()" class="btn-success w-full">+ Agregar Material</button>
+    <button onclick="addMaterialModal()" class="admin-btn-success w-full">+ Agregar Material</button>
   `;
 
   container.innerHTML = html;
@@ -161,17 +161,17 @@ function renderServicesTab() {
   if (!sidebar || !details) return;
 
   // Render sidebar
-  let sidebarHtml = `<div class="flex flex-col gap-16">`;
+  let sidebarHtml = `<div class="flex admin-flex-col gap-16">`;
   Object.entries(servicios).forEach(([key, service]) => {
     const isActive = key === currentServiceKey ? 'active' : '';
     sidebarHtml += `
-      <div onclick="selectService('${escapeHtml(key)}')" class="service-item ${isActive}">
+      <div onclick="selectService('${escapeHtml(key)}')" class="admin-service-item ${isActive}">
         ${escapeHtml(service.nombre)}
       </div>
     `;
   });
   sidebarHtml += `</div>
-    <button onclick="addServiceModal()" class="btn-success w-full" style="margin-top: 16px;">+ Nuevo Servicio</button>`;
+    <button onclick="addServiceModal()" class="admin-btn-success w-full" style="margin-top: 16px;">+ Nuevo Servicio</button>`;
   sidebar.innerHTML = sidebarHtml;
 
   // Render details
@@ -182,7 +182,7 @@ function renderServicesTab() {
 
   const service = servicios[currentServiceKey];
   let detailsHtml = `
-    <div class="flex flex-col gap-20">
+    <div class="flex admin-flex-col gap-20">
       <h4 style="font-size: 20px; font-weight: 900; margin: 0; color: var(--navy-900);">${escapeHtml(service.nombre)}</h4>
       <p style="color: var(--concrete-700); margin: 0; font-size: 14px;">${escapeHtml(service.descripcion)}</p>
 
@@ -200,7 +200,7 @@ function renderServicesTab() {
   if (Object.keys(service.materiales).length === 0) {
     detailsHtml += '<p style="color: var(--concrete-700); font-size: 14px;">Sin materiales asignados</p>';
   } else {
-    detailsHtml += '<div class="flex flex-col gap-12">';
+    detailsHtml += '<div class="flex admin-flex-col gap-12">';
     Object.entries(service.materiales).forEach(([matKey, matQty]) => {
       const mat = materiales[matKey];
       if (!mat) return;
@@ -208,14 +208,14 @@ function renderServicesTab() {
       const totalPrice = mat.precio_unitario;
       detailsHtml += `
         <div style="padding: 12px; background: var(--concrete-50); border-left: 3px solid var(--yellow-500); border-radius: 6px;">
-          <div class="flex-between">
+          <div class="admin-flex-between">
             <div>
               <div style="font-weight: 700; color: var(--navy-900); margin-bottom: 6px;">${escapeHtml(mat.nombre)}</div>
               <div style="font-size: 13px; color: var(--concrete-700);">
                 ${matQty.cantidad_por_m2} ${escapeHtml(mat.unidad)}/m² • $${totalPrice.toFixed(2)}/${escapeHtml(mat.unidad)}
               </div>
             </div>
-            <button onclick="removeMaterialFromService('${escapeHtml(currentServiceKey)}', '${escapeHtml(matKey)}')" class="btn-danger">Quitar</button>
+            <button onclick="removeMaterialFromService('${escapeHtml(currentServiceKey)}', '${escapeHtml(matKey)}')" class="admin-btn-danger">Quitar</button>
           </div>
         </div>
       `;
@@ -225,7 +225,7 @@ function renderServicesTab() {
 
   detailsHtml += `
       </div>
-      <button onclick="addMaterialToServiceModal('${escapeHtml(currentServiceKey)}')" class="btn-primary w-full">+ Agregar Material</button>
+      <button onclick="addMaterialToServiceModal('${escapeHtml(currentServiceKey)}')" class="admin-btn-primary w-full">+ Agregar Material</button>
     </div>
   `;
 
@@ -334,7 +334,7 @@ function renderCalculatorTab() {
   });
 
   let html = `
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px;">
+    <div class="admin-calc-grid" style="margin-top: 24px;">
       <div>
         <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px; height: fit-content; position: sticky; top: 120px;">
           <h3 style="font-size: 20px; font-weight: 900; margin: 0 0 24px; color: var(--navy-900);">Generar Presupuesto</h3>
@@ -408,7 +408,7 @@ function calculateBudget() {
 
   // Render results
   let html = `
-    <div style="display: flex; flex-direction: column; gap: 24px;">
+    <div class="admin-calc-results">
       <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px;">
         <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 20px; color: var(--navy-900);">📋 Materiales necesarios</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">

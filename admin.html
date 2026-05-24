@@ -164,8 +164,8 @@
 
     /* Flex */
     .flex { display: flex; }
-    .flex-col { flex-direction: column; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .admin-flex-col { flex-direction: column; }
+    .admin-flex-between { display: flex; justify-content: space-between; align-items: center; }
     .flex-center { display: flex; justify-content: center; align-items: center; }
 
     /* Grid */
@@ -205,7 +205,7 @@
     /* ============ COMPONENT CLASSES ============ */
 
     /* Buttons - Mobile first */
-    .btn-primary, .btn-secondary, .btn-danger, .btn-success {
+    .admin-btn-primary, .admin-btn-secondary, .admin-btn-danger, .admin-btn-success {
       padding: 10px 16px;
       font-size: 13px;
       border: none;
@@ -214,28 +214,28 @@
       cursor: pointer;
     }
 
-    .btn-primary {
+    .admin-btn-primary {
       background: var(--navy-700);
       color: white;
     }
 
-    .btn-secondary {
+    .admin-btn-secondary {
       background: var(--concrete-100);
       color: var(--ink);
     }
 
-    .btn-danger {
+    .admin-btn-danger {
       background: var(--danger);
       color: white;
     }
 
-    .btn-success {
+    .admin-btn-success {
       background: var(--yellow-500);
       color: var(--ink);
     }
 
     @media (min-width: 640px) {
-      .btn-primary, .btn-secondary, .btn-danger, .btn-success {
+      .admin-btn-primary, .admin-btn-secondary, .admin-btn-danger, .admin-btn-success {
         padding: 12px 20px;
         font-size: 14px;
       }
@@ -255,7 +255,7 @@
     }
 
     /* Material Table */
-    .material-table {
+    .admin-material-table {
       width: 100%;
       display: grid;
       grid-template-columns: 1fr;
@@ -265,13 +265,13 @@
 
     /* Tablet: 2-column grid */
     @media (min-width: 640px) {
-      .material-table {
+      .admin-material-table {
         grid-template-columns: 1fr 1fr;
       }
     }
 
     /* Material Row (as card on mobile, table row on desktop) */
-    .material-row {
+    .admin-material-row {
       padding: 16px;
       background: var(--white);
       border: 1px solid var(--concrete-100);
@@ -282,23 +282,23 @@
     }
 
     /* Material Name and Meta */
-    .material-name {
+    .admin-material-name {
       font-weight: 700;
       color: var(--navy-900);
     }
 
-    .material-meta {
+    .admin-material-meta {
       font-size: 13px;
       color: var(--concrete-700);
     }
 
     /* Desktop: Single-column expanded view */
     @media (min-width: 1024px) {
-      .material-table {
+      .admin-material-table {
         grid-template-columns: 1fr;
       }
 
-      .material-row {
+      .admin-material-row {
         padding: 20px;
         flex-direction: row;
         justify-content: space-between;
@@ -307,14 +307,14 @@
     }
 
     /* Service Layout */
-    .services-layout {
+    .admin-services-layout {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
     @media (min-width: 1024px) {
-      .services-layout {
+      .admin-services-layout {
         display: grid;
         grid-template-columns: 280px 1fr;
         gap: 32px;
@@ -322,7 +322,7 @@
     }
 
     /* Service Item */
-    .service-item {
+    .admin-service-item {
       padding: 12px;
       background: transparent;
       border: 1px solid transparent;
@@ -333,20 +333,20 @@
       margin-bottom: 8px;
     }
 
-    .service-item.active {
+    .admin-service-item.active {
       background: var(--concrete-50);
       border: 1px solid var(--navy-700);
       color: var(--navy-900);
     }
 
     /* Calculator Form and Results */
-    .calc-form {
+    .admin-calc-form {
       width: 100%;
       margin-bottom: 24px;
     }
 
     @media (min-width: 1024px) {
-      .calc-form {
+      .admin-calc-form {
         width: 280px;
         position: sticky;
         top: 120px;
@@ -354,20 +354,20 @@
       }
     }
 
-    .calc-results {
+    .admin-calc-results {
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
-    .calc-grid {
+    .admin-calc-grid {
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
     @media (min-width: 1024px) {
-      .calc-grid {
+      .admin-calc-grid {
         display: grid;
         grid-template-columns: 280px 1fr;
         gap: 32px;
