@@ -1038,68 +1038,95 @@
     @media (max-width: 768px) {
       .admin-container {
         max-width: 100%;
-        padding: 24px 16px;
+        padding: 20px 0;
+      }
+
+      .logout-zone {
+        padding: 0 16px 16px;
+        margin-bottom: 0;
       }
 
       .admin-section {
-        padding: 20px;
-        border-radius: 10px;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
       }
 
       .admin-section h3 {
-        font-size: 18px;
-        margin-bottom: 16px;
+        font-size: 20px;
+        margin: 16px 16px 8px;
+        padding: 0;
+      }
+
+      .admin-section h3::before {
+        display: none;
       }
 
       .info-box {
+        margin: 0 16px 16px;
         font-size: 12px;
-        padding: 12px 14px;
-        margin-bottom: 16px;
+        padding: 12px;
       }
 
-      /* Main Tabs */
+      /* Main Tabs - Full Width */
       .admin-main-tabs {
-        flex-direction: column;
-        border-bottom: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
+        padding: 0 16px;
         margin-bottom: 16px;
+        border: none;
       }
 
       .admin-main-tab {
-        padding: 12px 16px;
-        font-size: 12px;
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        border-left: none;
         border-bottom: none;
-        border-left: 3px solid transparent;
+        border: 1.5px solid var(--concrete-200);
+        background: var(--white);
+        border-radius: 10px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 200ms;
         margin-bottom: 0;
-        text-align: left;
-        background: rgba(251, 191, 36, 0.05);
-        border-radius: 8px;
       }
 
       .admin-main-tab:hover {
-        background: rgba(251, 191, 36, 0.12);
+        border-color: var(--yellow-400);
+        background: rgba(251, 191, 36, 0.05);
       }
 
       .admin-main-tab.active {
-        border-left-color: var(--yellow-500);
-        border-bottom-color: transparent;
-        background: rgba(251, 191, 36, 0.15);
-        font-weight: 800;
+        border-color: var(--yellow-500);
+        background: linear-gradient(135deg, var(--yellow-500) 0%, var(--yellow-600) 100%);
+        color: var(--ink);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
       }
 
-      /* Layout */
+      /* Content Padding */
+      .admin-main-content {
+        padding: 0 16px;
+      }
+
+      /* Layout - Vertical Stack */
       .admin-layout {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 16px;
+        min-height: auto;
       }
 
       .admin-sidebar {
-        max-height: auto;
-        padding: 12px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 6px;
-        border-radius: 8px;
+        max-height: none;
+        padding: 0;
+        border: none;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
         overflow-y: visible;
       }
 
@@ -1107,55 +1134,70 @@
         display: none;
       }
 
+      /* Service Selector Dropdown */
       .admin-tabs {
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
         width: 100%;
-        gap: 4px;
+        padding: 0;
       }
 
       .admin-tab {
-        padding: 8px 10px;
-        font-size: 11px;
+        padding: 12px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1.5px solid var(--concrete-200);
         border-left: none;
-        border-bottom: 2px solid transparent;
-        margin-bottom: 0;
-        border-radius: 6px;
-        background: rgba(255, 255, 255, 0.7);
+        border-bottom: none;
+        border-radius: 10px;
+        background: var(--concrete-50);
+        text-align: left;
         text-transform: capitalize;
         letter-spacing: normal;
+        transition: all 150ms;
+        margin: 0;
       }
 
       .admin-tab:hover {
-        border-left-color: transparent;
-        border-bottom-color: var(--yellow-400);
-        background: rgba(251, 191, 36, 0.12);
+        border-color: var(--yellow-400);
+        background: rgba(251, 191, 36, 0.08);
       }
 
       .admin-tab.active {
-        border-left-color: transparent;
-        border-bottom-color: var(--yellow-500);
-        background: rgba(251, 191, 36, 0.15);
+        border-color: var(--yellow-500);
+        background: rgba(251, 191, 36, 0.12);
         font-weight: 700;
-      }
-
-      .new-service-bar {
-        margin-top: 8px !important;
-        padding-top: 0 !important;
-        border-top: none !important;
-        grid-column: 1 / -1;
-        justify-content: center;
+        color: var(--navy-900);
       }
 
       .admin-content-area {
-        padding: 16px;
+        padding: 0;
+        background: none;
+        border: none;
+        border-radius: 0;
+      }
+
+      /* Add Service Button */
+      .new-service-bar {
+        margin: 16px 0 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        grid-column: auto;
+        justify-content: center;
+      }
+
+      .admin-sidebar .add-service-btn {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 12px;
       }
 
       /* Materials Grid */
       .materials-grid {
         grid-template-columns: 1fr;
         gap: 12px;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
       }
 
       .material-card {
@@ -1163,50 +1205,64 @@
       }
 
       .material-card__header {
-        padding: 12px;
+        padding: 14px;
+      }
+
+      .material-card__title {
+        font-size: 14px;
+        font-weight: 700;
       }
 
       .material-card__body {
-        padding: 14px;
-        gap: 12px;
+        padding: 16px;
+        gap: 14px;
       }
 
       .material-card__row {
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
+        gap: 10px;
       }
 
       .material-card__body label {
         font-size: 10px;
+        font-weight: 700;
       }
 
       .material-card__body input {
-        padding: 8px 10px;
-        font-size: 13px;
+        padding: 10px 12px;
+        font-size: 14px;
+        border-radius: 8px;
       }
 
       .add-material-btn {
-        padding: 12px;
-        font-size: 12px;
+        padding: 14px 16px;
+        font-size: 13px;
+        margin-bottom: 16px;
       }
 
       /* Materials Table */
       .materials-table-wrapper {
-        border-radius: 8px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 16px;
       }
 
       .materials-table {
-        font-size: 11px;
+        font-size: 12px;
       }
 
       .materials-table th {
-        padding: 10px 8px;
-        font-size: 10px;
+        padding: 12px 10px;
+        font-size: 11px;
       }
 
       .materials-table td {
-        padding: 10px 8px;
-        font-size: 11px;
+        padding: 12px 10px;
+        font-size: 12px;
+      }
+
+      .materials-table tbody tr {
+        border-bottom: 1px solid var(--concrete-100);
       }
 
       .material-services {
@@ -1215,32 +1271,33 @@
       }
 
       .service-badge {
-        padding: 3px 8px;
-        font-size: 10px;
+        padding: 4px 8px;
+        font-size: 11px;
+        text-align: center;
       }
 
       /* Buttons */
       .admin-buttons {
         flex-direction: column;
-        gap: 10px;
-        margin-top: 16px;
+        gap: 12px;
+        margin-top: 0;
+        padding: 0 16px 24px;
+        border-top: none;
       }
 
       .admin-btn {
-        padding: 12px 16px;
-        font-size: 12px;
+        padding: 14px 16px;
+        font-size: 13px;
         min-width: auto;
         flex: 1;
-      }
-
-      .logout-zone {
-        margin-bottom: 16px;
+        width: 100%;
+        border-radius: 10px;
       }
 
       /* Login */
       .login-box {
         max-width: 90%;
-        margin: 60px auto;
+        margin: 40px auto;
         padding: 32px 24px;
       }
 
@@ -1250,6 +1307,10 @@
 
       .login-field {
         margin-bottom: 16px;
+      }
+
+      .login-field label {
+        font-size: 12px;
       }
 
       .login-field input {
@@ -1267,126 +1328,198 @@
       .material-edit-box {
         width: 95%;
         max-width: 100%;
-        padding: 24px 20px;
+        padding: 28px 20px;
         border-radius: 16px;
       }
 
       .modal-box h3,
       .material-edit-box h3 {
         font-size: 20px;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
+      }
+
+      .modal-box label,
+      .material-edit-field label {
+        font-size: 12px;
+        margin-bottom: 8px;
       }
 
       .modal-box input,
       .material-edit-field input {
-        padding: 12px;
+        padding: 14px;
         font-size: 14px;
+        border-radius: 10px;
+        margin-bottom: 18px;
       }
 
       .modal-actions,
       .material-edit-actions {
         flex-direction: column-reverse;
-        gap: 8px;
+        gap: 10px;
       }
 
       .modal-actions button,
       .material-edit-actions button {
         width: 100%;
-        padding: 12px 16px;
+        padding: 14px 16px;
+        font-size: 13px;
+        border-radius: 10px;
       }
 
-      /* Main tabs alignment */
-      .admin-main-tabs {
-        gap: 8px;
+      .material-services-section {
+        border-radius: 10px;
+        padding: 14px;
+      }
+
+      .service-item {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+      }
+
+      .add-service-field {
+        gap: 10px;
+      }
+
+      .add-service-field select,
+      .add-service-field button {
+        padding: 12px;
+        border-radius: 8px;
       }
     }
 
     @media (max-width: 480px) {
       .admin-container {
-        padding: 16px 12px;
+        padding: 16px 0;
       }
 
       .admin-section {
-        padding: 16px;
+        padding: 0;
       }
 
       .admin-section h3 {
-        font-size: 16px;
-        gap: 8px;
-      }
-
-      .admin-section h3::before {
-        width: 3px;
-        height: 22px;
+        font-size: 18px;
+        margin: 12px 16px 8px;
       }
 
       .info-box {
         font-size: 11px;
-        padding: 10px 12px;
+        padding: 10px 14px;
+        margin: 0 16px 14px;
+        border-radius: 8px;
+      }
+
+      .admin-main-tabs {
+        gap: 6px;
+        padding: 0 12px;
         margin-bottom: 12px;
       }
 
-      .admin-sidebar {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        padding: 8px;
-        gap: 4px;
-      }
-
-      .admin-tab {
-        padding: 6px 8px;
-        font-size: 10px;
-      }
-
-      .material-card__title {
+      .admin-main-tab {
+        padding: 12px 14px;
         font-size: 12px;
+        border-radius: 8px;
+      }
+
+      .admin-main-content {
+        padding: 0 12px;
+      }
+
+      .admin-sidebar {
         gap: 8px;
       }
 
-      .material-card__icon {
-        font-size: 16px;
+      .admin-tab {
+        padding: 10px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+
+      .admin-content-area {
+        margin-top: 12px;
+      }
+
+      .materials-grid {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .material-card {
+        border-radius: 10px;
+      }
+
+      .material-card__header {
+        padding: 12px;
+      }
+
+      .material-card__title {
+        font-size: 13px;
+      }
+
+      .material-card__body {
+        padding: 14px;
+        gap: 12px;
       }
 
       .material-card__row {
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 6px;
+        gap: 8px;
       }
 
       .material-card__body input {
-        padding: 6px 8px;
+        padding: 9px 10px;
+        font-size: 13px;
+      }
+
+      .add-material-btn {
+        padding: 12px 14px;
         font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .materials-table-wrapper {
+        margin-bottom: 12px;
       }
 
       .materials-table th,
       .materials-table td {
-        padding: 8px 6px;
-        font-size: 10px;
+        padding: 10px 8px;
+        font-size: 11px;
       }
 
       .material-services {
-        flex-direction: row;
-        flex-wrap: wrap;
         gap: 3px;
       }
 
       .service-badge {
-        padding: 2px 6px;
-        font-size: 9px;
+        padding: 3px 6px;
+        font-size: 10px;
+      }
+
+      .admin-buttons {
+        padding: 0 12px 20px;
+        gap: 10px;
       }
 
       .admin-btn {
-        padding: 10px 12px;
-        font-size: 11px;
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+
+      .logout-zone {
+        padding: 0 12px 12px;
       }
 
       .modal-box,
       .material-edit-box {
-        padding: 20px 16px;
+        width: 95%;
+        padding: 24px 18px;
+        border-radius: 14px;
       }
 
       .modal-box h3,
       .material-edit-box h3 {
         font-size: 18px;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
 
       .modal-box label,
@@ -1394,8 +1527,50 @@
         font-size: 11px;
       }
 
-      .add-material-btn {
+      .modal-box input,
+      .material-edit-field input {
+        padding: 12px;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+
+      .modal-actions,
+      .material-edit-actions {
+        gap: 8px;
+      }
+
+      .modal-actions button,
+      .material-edit-actions button {
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+
+      .material-services-section {
+        padding: 12px;
+        border-radius: 8px;
+      }
+
+      .service-item {
         padding: 10px;
+        border-radius: 6px;
+      }
+
+      .add-service-field {
+        gap: 8px;
+      }
+
+      .add-service-field select,
+      .add-service-field button {
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      .new-service-bar {
+        margin-top: 12px !important;
+      }
+
+      .admin-sidebar .add-service-btn {
+        padding: 10px 12px;
         font-size: 11px;
       }
     }
