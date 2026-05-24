@@ -32,7 +32,7 @@
       padding: 32px;
       height: fit-content;
       position: sticky;
-      top: 100px;
+      top: 120px;
     }
 
     .calc-form h3 {
@@ -477,7 +477,7 @@
   <div class="calc-layout">
     <!-- Left: Input Form -->
     <div>
-      <div class="calc-form" style="position: sticky; top: 120px; height: fit-content;">
+      <div class="calc-form">
         <h3>Selecciona tu proyecto</h3>
 
         <div class="form-group">
@@ -525,7 +525,7 @@
 
       <div id="budgetContainer" style="display: none;"></div>
 
-      <div id="actionsContainer" style="display: none;" class="result-card" style="padding: 0;">
+      <div id="actionsContainer" class="result-card" style="display: none; padding: 0;">
         <div style="padding: 28px;">
           <h4>Descargar</h4>
           <div class="action-buttons">
@@ -543,11 +543,11 @@
 </section>
 
 <!-- ============ SETTINGS MODAL ============ -->
-<div id="settingsModal" class="settings-modal">
+<div id="settingsModal" class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
   <div class="settings-content">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-      <h3 style="margin: 0;">Personalizar Materiales</h3>
-      <button onclick="closeSettings()" style="
+      <h3 id="settingsTitle" style="margin: 0;">Personalizar Materiales</h3>
+      <button onclick="closeSettings()" aria-label="Cerrar diálogo" style="
         background: none;
         border: none;
         font-size: 24px;

@@ -1244,6 +1244,10 @@ button { font-family: inherit; cursor: pointer; border: none; }
   user-select: none;
   transition: background 200ms, color 200ms;
   background: var(--concrete-50);
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
 }
 
 .faq-item summary:hover {
