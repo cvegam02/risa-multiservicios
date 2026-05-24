@@ -66,12 +66,12 @@ function renderMaterialsTab() {
       <div class="material-row">
         <div class="flex-between">
           <div>
-            <div style="font-weight: 700; color: var(--navy-900);">${escapeHtml(mat.nombre)}</div>
-            <div style="font-size: 13px; color: var(--concrete-700);">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
+            <div class="material-name">${escapeHtml(mat.nombre)}</div>
+            <div class="material-meta">${escapeHtml(mat.unidad)} • $${mat.precio_unitario.toFixed(2)}</div>
           </div>
           <div class="btn-row">
-            <button onclick="editMaterialModal('${key}')" class="btn-primary">Editar</button>
-            <button onclick="deleteMaterial('${key}')" class="btn-danger">Eliminar</button>
+            <button onclick="editMaterialModal('${escapeHtml(key)}')" class="btn-primary">Editar</button>
+            <button onclick="deleteMaterial('${escapeHtml(key)}')" class="btn-danger">Eliminar</button>
           </div>
         </div>
       </div>

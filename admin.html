@@ -281,26 +281,28 @@
       gap: 8px;
     }
 
-    /* Desktop: Table layout */
+    /* Material Name and Meta */
+    .material-name {
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .material-meta {
+      font-size: 13px;
+      color: var(--concrete-700);
+    }
+
+    /* Desktop: Single-column expanded view */
     @media (min-width: 1024px) {
       .material-table {
-        display: table;
-        border-collapse: collapse;
-        gap: 0;
+        grid-template-columns: 1fr;
       }
 
       .material-row {
-        display: table-row;
-        padding: 0;
-        background: transparent;
-        border: none;
-        border-radius: 0;
-      }
-
-      .material-row > * {
-        display: table-cell;
-        padding: 12px;
-        border-bottom: 1px solid var(--concrete-100);
+        padding: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
       }
     }
 
