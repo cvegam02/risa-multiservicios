@@ -2,33 +2,33 @@
   "materiales": {
     "pega_azulejos": {
       "nombre": "Pega azulejos",
-      "unidad": "kg",
-      "precio_unitario": 150
+      "unidad": "sacos (20kg)",
+      "precio_unitario": 380
     },
     "arena_fina": {
       "nombre": "Arena fina",
-      "unidad": "kg",
-      "precio_unitario": 80
+      "unidad": "m³",
+      "precio_unitario": 180
     },
     "arena_gruesa": {
       "nombre": "Arena gruesa",
-      "unidad": "kg",
-      "precio_unitario": 80
+      "unidad": "m³",
+      "precio_unitario": 180
     },
     "cemento_gris": {
       "nombre": "Cemento gris",
-      "unidad": "kg",
-      "precio_unitario": 120
+      "unidad": "sacos (25kg)",
+      "precio_unitario": 220
     },
     "lechada": {
       "nombre": "Lechada / Grout",
-      "unidad": "kg",
-      "precio_unitario": 180
+      "unidad": "sacos (25kg)",
+      "precio_unitario": 420
     },
     "grava": {
       "nombre": "Grava o piedra",
-      "unidad": "kg",
-      "precio_unitario": 100
+      "unidad": "m³",
+      "precio_unitario": 280
     },
     "agua": {
       "nombre": "Agua",
@@ -92,8 +92,8 @@
     },
     "aditivo_impermeabilizante": {
       "nombre": "Aditivo impermeabilizante",
-      "unidad": "kg",
-      "precio_unitario": 300
+      "unidad": "sacos (25kg)",
+      "precio_unitario": 620
     },
     "tela_asfaltica": {
       "nombre": "Tela asfáltica",
@@ -132,10 +132,10 @@
       "descripcion": "Colocación de azulejos y vitropiso",
       "medible": true,
       "materiales": {
-        "pega_azulejos": { "cantidad_por_m2": 1.5 },
-        "arena_fina": { "cantidad_por_m2": 0.8 },
-        "cemento_gris": { "cantidad_por_m2": 0.5 },
-        "lechada": { "cantidad_por_m2": 0.3 }
+        "pega_azulejos": { "cantidad_por_m2": 0.075 },
+        "arena_fina": { "cantidad_por_m2": 0.0008 },
+        "cemento_gris": { "cantidad_por_m2": 0.02 },
+        "lechada": { "cantidad_por_m2": 0.012 }
       }
     },
     "cementado": {
@@ -143,9 +143,9 @@
       "descripcion": "Preparación e instalación de pisos de cemento",
       "medible": true,
       "materiales": {
-        "arena_gruesa": { "cantidad_por_m2": 40 },
-        "grava": { "cantidad_por_m2": 60 },
-        "cemento_gris": { "cantidad_por_m2": 25 },
+        "arena_gruesa": { "cantidad_por_m2": 0.04 },
+        "grava": { "cantidad_por_m2": 0.06 },
+        "cemento_gris": { "cantidad_por_m2": 1.0 },
         "agua": { "cantidad_por_m2": 20 }
       }
     },
@@ -179,7 +179,7 @@
       "materiales": {
         "impermeabilizante": { "cantidad_por_m2": 1.2 },
         "primer": { "cantidad_por_m2": 0.3 },
-        "aditivo_impermeabilizante": { "cantidad_por_m2": 0.2 },
+        "aditivo_impermeabilizante": { "cantidad_por_m2": 0.008 },
         "tela_asfaltica": { "cantidad_por_m2": 1.1 }
       }
     },
