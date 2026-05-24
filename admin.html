@@ -499,14 +499,14 @@ function buildAdminTabs() {
             <th>Material</th>
             <th>Cantidad/m²</th>
             <th>Unidad</th>
-            <th>Precio unitario ($)</th>
+            <th>Precio ($)</th>
           </tr>
         </thead>
         <tbody>
           ${Object.entries(servicio.materiales).map(([materialKey, material]) => `
             <tr>
-              <td><span class="material-name">${material.nombre}</span></td>
-              <td>
+              <td data-label="Material"><span class="material-name">${material.nombre}</span></td>
+              <td data-label="Cantidad/m²">
                 <input
                   type="number"
                   step="0.01"
@@ -516,8 +516,8 @@ function buildAdminTabs() {
                   data-field="cantidad_por_m2"
                 />
               </td>
-              <td><span class="material-unit">${material.unidad}</span></td>
-              <td>
+              <td data-label="Unidad"><span class="material-unit">${material.unidad}</span></td>
+              <td data-label="Precio ($)">
                 <input
                   type="number"
                   step="0.01"
