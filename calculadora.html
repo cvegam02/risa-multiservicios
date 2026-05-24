@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Materiales — RISA Multiservicios</title>
+  <meta name="description" content="Calcula automáticamente los materiales que necesitas para tu proyecto" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .calculator-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .calc-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Input Section */
+    .calc-form {
+      background: var(--white);
+      border: 1px solid var(--concrete-100);
+      border-radius: 14px;
+      padding: 32px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .calc-form h3 {
+      font-weight: 900;
+      font-size: 22px;
+      margin: 0 0 24px;
+      color: var(--navy-900);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--navy-700);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .form-group select,
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      background: var(--concrete-50);
+      color: var(--ink);
+      transition: border-color 150ms, background 150ms;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      background: var(--white);
+    }
+
+    .form-group input[type="number"] {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    /* Results Section */
+    .calc-results {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .result-card {
+      background: var(--white);
+      border: 1px solid var(--concrete-100);
+      border-radius: 14px;
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .result-card.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      color: var(--concrete-700);
+      text-align: center;
+    }
+
+    .result-card.empty svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .result-card h4 {
+      font-weight: 900;
+      font-size: 18px;
+      margin: 0 0 20px;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .result-card h4::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--yellow-500);
+      border-radius: 2px;
+    }
+
+    .materiales-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .material-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--concrete-50);
+      border-left: 3px solid var(--yellow-500);
+      border-radius: 6px;
+    }
+
+    .material-item__name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .material-item__qty {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .material-item__value {
+      font-weight: 900;
+      font-size: 16px;
+      color: var(--navy-900);
+    }
+
+    .material-item__unit {
+      font-size: 12px;
+      color: var(--concrete-700);
+      font-weight: 600;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--concrete-100);
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      padding-top: 16px;
+      padding-bottom: 0;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--navy-900);
+    }
+
+    .summary-row .label {
+      color: var(--concrete-700);
+      font-weight: 500;
+    }
+
+    .summary-row .value {
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .summary-row:last-child .label {
+      color: var(--navy-900);
+    }
+
+    .summary-row:last-child .value {
+      color: var(--yellow-600);
+      font-size: 22px;
+    }
+
+    /* Settings */
+    .settings-toggle {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 56px;
+      height: 56px;
+      background: var(--yellow-500);
+      color: var(--ink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      font-weight: 800;
+      font-size: 24px;
+      transition: transform 150ms, background 150ms;
+      z-index: 200;
+    }
+
+    .settings-toggle:hover {
+      background: var(--yellow-600);
+      transform: scale(1.1);
+    }
+
+    .settings-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .settings-modal.active {
+      display: flex;
+    }
+
+    .settings-content {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .settings-content h3 {
+      font-weight: 900;
+      font-size: 24px;
+      margin: 0 0 24px;
+      color: var(--navy-900);
+    }
+
+    .settings-group {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--concrete-100);
+    }
+
+    .settings-group:last-child {
+      border-bottom: none;
+    }
+
+    .settings-group h4 {
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--yellow-600);
+      letter-spacing: 0.12em;
+      margin: 0 0 16px;
+    }
+
+    .param-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .param-row label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .param-row input {
+      padding: 10px 12px;
+      border: 1.5px solid var(--concrete-200);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .param-row input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: none;
+      cursor: pointer;
+      transition: background 150ms;
+    }
+
+    .btn-save {
+      background: var(--yellow-500);
+      color: var(--ink);
+    }
+
+    .btn-save:hover {
+      background: var(--yellow-600);
+    }
+
+    .btn-cancel {
+      background: var(--concrete-200);
+      color: var(--ink);
+    }
+
+    .btn-cancel:hover {
+      background: var(--concrete-300);
+    }
+
+    .btn-reset {
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    .btn-reset:hover {
+      background: #c41c1c;
+    }
+
+    .export-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .export-buttons button {
+      flex: 1;
+      padding: 10px;
+      background: var(--navy-700);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 150ms;
+    }
+
+    .export-buttons button:hover {
+      background: var(--navy-900);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: transform 150ms;
+    }
+
+    .action-buttons button:active {
+      transform: scale(0.97);
+    }
+
+    .btn-download {
+      background: var(--navy-900);
+      color: var(--white);
+    }
+
+    .btn-download:hover {
+      background: var(--navy-700);
+    }
+
+    .btn-print {
+      background: var(--concrete-700);
+      color: var(--white);
+    }
+
+    .btn-print:hover {
+      background: var(--concrete-900);
+    }
+
+    .info-message {
+      padding: 14px;
+      background: #dcfce7;
+      border-left: 4px solid #22c55e;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #15803d;
+      margin-bottom: 20px;
+    }
+
+    /* Config Section */
+    .config-section {
+      background: var(--concrete-50);
+      border: 1px solid var(--concrete-200);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 40px;
+    }
+
+    .config-header {
+      background: var(--navy-900);
+      color: var(--white);
+      padding: 20px 28px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 150ms;
+    }
+
+    .config-header:hover {
+      background: var(--navy-700);
+    }
+
+    .config-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .config-toggle {
+      font-size: 20px;
+      transition: transform 200ms;
+    }
+
+    .config-toggle.open {
+      transform: rotate(180deg);
+    }
+
+    .config-body {
+      display: none;
+      padding: 32px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 300ms ease;
+    }
+
+    .config-body.open {
+      display: block;
+      max-height: 2000px;
+    }
+
+    .config-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--concrete-200);
+    }
+
+    .config-tab {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--concrete-700);
+      cursor: pointer;
+      transition: all 150ms;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+
+    .config-tab.active {
+      color: var(--navy-900);
+      border-bottom-color: var(--yellow-500);
+    }
+
+    .config-tab:hover {
+      color: var(--navy-900);
+    }
+
+    .config-content {
+      display: none;
+    }
+
+    .config-content.active {
+      display: block;
+    }
+
+    .material-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .material-table thead {
+      background: var(--navy-50);
+    }
+
+    .material-table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 2px solid var(--concrete-200);
+    }
+
+    .material-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--concrete-200);
+      font-size: 14px;
+    }
+
+    .material-table td:last-child {
+      text-align: right;
+    }
+
+    .material-table tr:hover {
+      background: rgba(251, 191, 36, 0.05);
+    }
+
+    .material-table input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--concrete-200);
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .material-table input:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      background: var(--white);
+    }
+
+    .config-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--concrete-200);
+    }
+
+    .config-actions button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 150ms;
+    }
+
+    .btn-config-save {
+      background: var(--yellow-500);
+      color: var(--ink);
+    }
+
+    .btn-config-save:hover {
+      background: var(--yellow-600);
+    }
+
+    .btn-config-reset {
+      background: var(--concrete-200);
+      color: var(--ink);
+    }
+
+    .btn-config-reset:hover {
+      background: var(--concrete-300);
+    }
+
+    .btn-config-export {
+      background: var(--navy-700);
+      color: var(--white);
+    }
+
+    .btn-config-export:hover {
+      background: var(--navy-900);
+    }
+
+    .import-input {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ HEADER (reuse from index) ============ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand__mark" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <div class="brand__name">RISA</div>
+        <div class="brand__tag">Multiservicios</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="calculadora.html" class="is-active">Calculadora</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="tel:6621210904" class="nav__cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        662 121 0904
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="padding: 60px 32px;">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="hero__overline">Herramienta Profesional</div>
+    <h1 class="hero__title" style="font-size: 52px;">
+      Calcula materiales<br />en <em><span>segundos.</span></em>
+    </h1>
+    <p class="hero__lede" style="max-width: 620px;">
+      Ingresa el área de tu proyecto y RISA te calcula automáticamente todos los materiales que necesitas, con presupuesto incluido.
+    </p>
+  </div>
+</section>
+
+<!-- ============ CALCULATOR ============ -->
+<section class="calculator-container">
+  <div class="info-message">
+    💡 Los valores están basados en estándares de construcción mexicana. Puedes personalizarlos haciendo click en el ⚙️ abajo a la derecha.
+  </div>
+
+  <div class="calc-layout">
+    <!-- Left: Input Form -->
+    <div>
+      <div class="calc-form">
+        <h3>Selecciona tu proyecto</h3>
+
+        <div class="form-group">
+          <label>Tipo de trabajo</label>
+          <select id="serviceSelect">
+            <option value="">Elige un servicio...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Área (m²)</label>
+          <input type="number" id="areaInput" placeholder="30" min="1" step="0.5" />
+        </div>
+
+        <div id="extraParams"></div>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--concrete-100);">
+          <button onclick="resetCalculator()" style="
+            width: 100%;
+            padding: 12px;
+            background: var(--concrete-100);
+            color: var(--ink);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 150ms;
+          " onmouseover="this.style.background='var(--concrete-200)'" onmouseout="this.style.background='var(--concrete-100)'">
+            Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Results -->
+    <div class="calc-results">
+      <div id="resultsContainer" class="result-card empty">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"></path>
+          </svg>
+          <p>Selecciona un servicio y área para calcular materiales</p>
+        </div>
+      </div>
+
+      <div id="budgetContainer" style="display: none;"></div>
+
+      <div id="actionsContainer" style="display: none;" class="result-card" style="padding: 0;">
+        <div style="padding: 28px;">
+          <h4>Descargar</h4>
+          <div class="action-buttons">
+            <button class="btn-download" onclick="downloadJSON()">
+              📥 JSON
+            </button>
+            <button class="btn-print" onclick="window.print()">
+              🖨️ Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ============ CONFIGURATION SECTION ============ -->
+<section class="calculator-container">
+  <div class="config-section">
+    <div class="config-header" onclick="toggleConfig()">
+      <h3>
+        <span>⚙️</span>
+        Configurar Materiales y Precios
+      </h3>
+      <span class="config-toggle">▼</span>
+    </div>
+
+    <div class="config-body">
+      <div class="config-tabs" id="configTabs"></div>
+      <div id="configContents"></div>
+
+      <div class="config-actions">
+        <button class="btn-config-save" onclick="saveConfigSettings()">
+          💾 Guardar cambios
+        </button>
+        <button class="btn-config-export" onclick="exportConfig()">
+          📥 Descargar configuración
+        </button>
+        <button class="btn-config-export" onclick="triggerImport()" style="background: var(--navy-600);">
+          📤 Cargar configuración
+        </button>
+        <button class="btn-config-reset" onclick="resetConfigToDefaults()">
+          🔄 Restaurar predeterminados
+        </button>
+      </div>
+
+      <input type="file" id="importInput" class="import-input" accept=".json" onchange="importConfig(event)" />
+    </div>
+  </div>
+</section>
+
+<!-- ============ SETTINGS MODAL ============ -->
+<div id="settingsModal" class="settings-modal">
+  <div class="settings-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h3 style="margin: 0;">Personalizar Materiales</h3>
+      <button onclick="closeSettings()" style="
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--concrete-700);
+      ">×</button>
+    </div>
+
+    <div id="settingsContent"></div>
+
+    <div class="modal-buttons">
+      <button class="btn-reset" onclick="resetToDefaults()">Restaurar predeterminados</button>
+      <button class="btn-cancel" onclick="closeSettings()">Cerrar</button>
+      <button class="btn-save" onclick="saveSettings()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<div class="settings-toggle" onclick="openSettings()" title="Personalizar materiales">⚙️</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-about">
+      <a href="index.html" class="brand">
+        <div class="brand__mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <div class="brand__name" style="color:var(--white);">RISA</div>
+          <div class="brand__tag">Multiservicios</div>
+        </div>
+      </a>
+      <p>Trabajo firme, bien hecho. Herramientas profesionales para tu proyecto.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Calculadora</h4>
+      <ul>
+        <li><a href="calculadora.html">Calcular materiales</a></li>
+        <li><a href="index.html#servicios">Nuestros servicios</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="tel:6621210904">📞 662 121 0904</a></li>
+        <li><a href="https://wa.me/526621210904">💬 WhatsApp</a></li>
+        <li>Hermosillo, Sonora</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 RISA Multiservicios. Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+<script src="calculadora.js"></script>
+</body>
+</html>
