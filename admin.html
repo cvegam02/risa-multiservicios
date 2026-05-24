@@ -157,6 +157,237 @@
       min-height: 300px;
     }
   </style>
+
+  <!-- NEW STYLES BLOCK - UTILITIES & COMPONENT CLASSES -->
+  <style>
+    /* ============ UTILITIES ============ */
+
+    /* Spacing */
+    .p-12 { padding: 12px; }
+    .p-16 { padding: 16px; }
+    .p-20 { padding: 20px; }
+    .p-24 { padding: 24px; }
+    .p-28 { padding: 28px; }
+
+    .gap-12 { gap: 12px; }
+    .gap-16 { gap: 16px; }
+    .gap-20 { gap: 20px; }
+    .gap-32 { gap: 32px; }
+
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+    .mb-24 { margin-bottom: 24px; }
+
+    /* Flex */
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .flex-center { display: flex; justify-content: center; align-items: center; }
+
+    /* Grid */
+    .grid-cols-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Responsive Grid - Mobile first */
+    @media (max-width: 640px) {
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Full width helper */
+    .w-full { width: 100%; }
+
+    /* Responsive padding */
+    @media (max-width: 640px) {
+      .p-28 { padding: 16px; }
+      .p-24 { padding: 16px; }
+      .gap-32 { gap: 16px; }
+      .gap-20 { gap: 12px; }
+    }
+
+    /* ============ COMPONENT CLASSES ============ */
+
+    /* Buttons */
+    .btn-primary {
+      padding: 12px 20px;
+      background: var(--navy-700);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-secondary {
+      padding: 12px 20px;
+      background: var(--concrete-100);
+      color: var(--ink);
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-danger {
+      padding: 12px 20px;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-success {
+      padding: 12px 20px;
+      background: var(--yellow-500);
+      color: var(--ink);
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Mobile responsive buttons */
+    @media (max-width: 640px) {
+      .btn-primary, .btn-secondary, .btn-danger, .btn-success {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+    }
+
+    /* Button rows - stack on mobile, flex on desktop */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    @media (min-width: 640px) {
+      .btn-row {
+        flex-direction: row;
+      }
+    }
+
+    /* Material Table */
+    .material-table {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    /* Material Row (as card on mobile, table row on desktop) */
+    .material-row {
+      padding: 16px;
+      background: var(--white);
+      border: 1px solid var(--concrete-100);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    @media (min-width: 1024px) {
+      .material-table {
+        display: table;
+        border-collapse: collapse;
+        gap: 0;
+      }
+
+      .material-row {
+        display: table-row;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+      }
+
+      .material-row > * {
+        display: table-cell;
+        padding: 12px;
+        border-bottom: 1px solid var(--concrete-100);
+      }
+    }
+
+    /* Service Layout */
+    .services-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media (min-width: 1024px) {
+      .services-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 32px;
+      }
+    }
+
+    /* Service Item */
+    .service-item {
+      padding: 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .service-item.active {
+      background: var(--concrete-50);
+      border: 1px solid var(--navy-700);
+      color: var(--navy-900);
+    }
+
+    /* Calculator Form and Results */
+    .calc-form {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    @media (min-width: 1024px) {
+      .calc-form {
+        width: 280px;
+        position: sticky;
+        top: 120px;
+        height: fit-content;
+      }
+    }
+
+    .calc-results {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .calc-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    @media (min-width: 1024px) {
+      .calc-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 32px;
+      }
+    }
+  </style>
 </head>
 <body>
 
