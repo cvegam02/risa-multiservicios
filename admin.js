@@ -407,8 +407,9 @@ function calculateBudget() {
   };
 
   // Render results
+  // TODO: Migrate inline styles in material rows and budget rows to CSS classes
+  // (lines 419-426, 436-451) for consistency with rest of refactor
   let html = `
-    <div class="admin-calc-results">
       <div style="background: var(--white); border: 1px solid var(--concrete-100); border-radius: 14px; padding: 28px;">
         <h4 style="font-size: 18px; font-weight: 900; margin: 0 0 20px; color: var(--navy-900);">📋 Materiales necesarios</h4>
         <div class="admin-flex admin-flex-col admin-gap-12">
@@ -459,7 +460,6 @@ function calculateBudget() {
           <button onclick="shareBudget()" class="admin-btn-primary admin-w-full">🔗 Compartir</button>
         </div>
       </div>
-    </div>
   `;
 
   document.getElementById('calcResults').innerHTML = html;
