@@ -65,7 +65,11 @@ async function queryGoogleSheet(sheetName, sheetGid) {
       }
     }
 
-    console.log(`✓ Loaded ${sheetName}: ${rows.length} rows`, rows.slice(0, 1));
+    console.log(`✓ Loaded ${sheetName}: ${rows.length} rows`);
+    if (rows.length > 0) {
+      console.log(`  Sample row keys: ${Object.keys(rows[0]).join(', ')}`);
+      console.log(`  First row id: "${rows[0].id || 'EMPTY'}"`);
+    }
     return rows;
   } catch (error) {
     console.error(`Error loading sheet "${sheetName}":`, error);
