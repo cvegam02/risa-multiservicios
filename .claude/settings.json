@@ -18,7 +18,12 @@
       "Bash(node -e ' *)",
       "Bash(pkill -f \"python3 -m http.server\")",
       "Bash(node -c admin.js)",
-      "Bash(node -c /home/cvega/Documentos/Projects/RISA/admin.js)"
+      "Bash(node -c /home/cvega/Documentos/Projects/RISA/admin.js)",
+      "Bash(curl -s \"https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=1\")",
+      "Bash(echo \"Server started. PID: $!\")",
+      "Bash(timeout 3 curl -s 'https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=__TRACKED_VAR__')",
+      "Bash(curl -v \"https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=0\")",
+      "Bash(curl -L \"https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=0\")"
     ],
     "additionalDirectories": [
       "/tmp"
