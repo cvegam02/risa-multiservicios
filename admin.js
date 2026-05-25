@@ -19,36 +19,103 @@ function escapeHtml(str) {
 
 // ============ DATA MANAGEMENT ============
 
+// Google Sheets configuration
+const SHEET_ID = '1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M';
+
+// Download and parse CSV from Google Sheets
+async function queryGoogleSheet(sheetName, sheetGid) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${sheetGid}`;
+  try {
+    const response = await fetch(url);
+    const csv = await response.text();
+
+    // Parse CSV
+    const lines = csv.trim().split('\n');
+    if (lines.length < 2) {
+      console.warn(`Sheet "${sheetName}" is empty or has no data`);
+      return [];
+    }
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[" ]/g, ''));
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(',').map(v => v.trim());
+      const row = {};
+      headers.forEach((header, idx) => {
+        row[header] = values[idx] || '';
+      });
+      rows.push(row);
+    }
+
+    console.log(`✓ Loaded ${sheetName}: ${rows.length} rows`);
+    return rows;
+  } catch (error) {
+    console.error(`Error loading sheet "${sheetName}":`, error);
+    return [];
+  }
+}
+
 async function loadMateriales() {
   try {
-    const response = await fetch('materiales.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    materiales = data.materiales || {};
-    servicios = data.servicios || {};
+    // Load sheets from Google Sheets (gid: 0=Materiales, 1=Servicios, 2=Servicios-Materiales)
+    const materialesData = await queryGoogleSheet('Materiales', 0);
+    const serviciosData = await queryGoogleSheet('Servicios', 1);
+    const serviciosMaterialesData = await queryGoogleSheet('Servicios-Materiales', 2);
+
+    // Build materiales object
+    materiales = {};
+    materialesData.forEach(mat => {
+      const id = mat.id?.trim();
+      if (id) {
+        materiales[id] = {
+          nombre: mat.nombre?.trim() || '',
+          unidad: mat.unidad?.trim() || '',
+          precio_unitario: parseFloat(mat.precio) || 0
+        };
+      }
+    });
+
+    // Build servicios object
+    servicios = {};
+    serviciosData.forEach(srv => {
+      const id = srv.id?.trim();
+      if (id) {
+        servicios[id] = {
+          nombre: srv.nombre?.trim() || '',
+          descripcion: srv.descripcion?.trim() || '',
+          medible: srv['¿medible?']?.toLowerCase() === 'sí' || srv['¿medible?'] === 'true',
+          materiales: {}
+        };
+      }
+    });
+
+    // Assign materials to services
+    serviciosMaterialesData.forEach(sm => {
+      const servId = sm.id_servicio?.trim();
+      const matId = sm.id_material?.trim();
+      if (servicios[servId] && matId) {
+        servicios[servId].materiales[matId] = {
+          cantidad_por_m2: parseFloat(sm.cantidad_por_m2) || 0
+        };
+      }
+    });
+
+    console.log('✓ Data loaded from Google Sheets');
   } catch (error) {
-    console.error('Error loading materials:', error);
+    console.error('Error loading from Google Sheets:', error);
     materiales = {};
     servicios = {};
   }
 }
 
 function saveMateriales() {
-  const data = { materiales, servicios };
-  localStorage.setItem('risaMateriales', JSON.stringify(data));
+  // Data comes from Google Sheets, no need to save to localStorage
+  // This is here for compatibility with edit functions
 }
 
 function loadCustomData() {
-  const saved = localStorage.getItem('risaMateriales');
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      materiales = data.materiales || materiales;
-      servicios = data.servicios || servicios;
-    } catch (error) {
-      console.error('Error loading custom data:', error);
-    }
-  }
+  // All data comes from Google Sheets, no localStorage caching
 }
 
 // ============ MATERIALS TAB ============
