@@ -188,7 +188,6 @@ function renderMaterialsTab() {
 
   html += `
     </div>
-    <button onclick="openAddMaterialModal()" class="admin-btn-success w-full" style="margin-top: 20px;">+ Agregar Material</button>
   `;
 
   container.innerHTML = html;
@@ -237,53 +236,10 @@ function editMaterialModal(key) {
   openEditMaterialModal(key);
 }
 
-function addMaterialModal() {
-  const nombre = prompt('Nombre del material:');
-  if (!nombre || nombre.trim() === '') return;
-
-  const unidad = prompt('Unidad (ej: kg, litros, metros):');
-  if (!unidad || unidad.trim() === '') return;
-
-  const precio = parseFloat(prompt('Precio unitario ($):'));
-  if (isNaN(precio) || precio < 0) {
-    alert('Error: ingresa un precio válido');
-    return;
-  }
-
-  const key = nombre.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-
-  if (materiales[key]) {
-    alert('Este material ya existe');
-    return;
-  }
-
-  materiales[key] = {
-    nombre: nombre.trim(),
-    unidad: unidad.trim(),
-    precio_unitario: precio
-  };
-
-  saveMateriales();
-  renderMaterialsTab();
-  alert('✓ Material agregado');
-}
-
-function deleteMaterial(key) {
-  if (!confirm(`¿Eliminar "${materiales[key].nombre}"? Esto afectará todos los servicios que lo usan.`)) return;
-
-  // Remove from all services
-  Object.keys(servicios).forEach(sKey => {
-    if (servicios[sKey].materiales[key]) {
-      delete servicios[sKey].materiales[key];
-    }
-  });
-
-  delete materiales[key];
-  saveMateriales();
-  renderMaterialsTab();
-  renderServicesTab();
-  alert('✓ Material eliminado');
-}
+// Material and service management functions removed
+// Data is now managed directly in Google Sheets
+// To add/edit/delete materials and services, update the Google Sheet at:
+// https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/edit
 
 // ============ SERVICES TAB ============
 
@@ -303,8 +259,7 @@ function renderServicesTab() {
       </div>
     `;
   });
-  sidebarHtml += `</div>
-    <button onclick="addServiceModal()" class="admin-btn-success w-full" style="margin-top: 16px;">+ Nuevo Servicio</button>`;
+  sidebarHtml += `</div>`;
   sidebar.innerHTML = sidebarHtml;
 
   // Render details
@@ -320,10 +275,9 @@ function renderServicesTab() {
       <p style="color: var(--concrete-700); margin: 0; font-size: 14px;">${escapeHtml(service.descripcion)}</p>
 
       <div style="margin: 0; padding: 12px; background: var(--concrete-50); border-radius: 8px;">
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-          <input type="checkbox" ${service.medible ? 'checked' : ''} onchange="toggleMedible('${escapeHtml(currentServiceKey)}')" style="width: 18px; height: 18px;">
-          <span style="font-weight: 600;">¿Es medible? (se puede calcular por m²)</span>
-        </label>
+        <span style="font-weight: 600;">
+          ${service.medible ? '✓ Medible' : '✗ No medible'} (se puede calcular por m²)
+        </span>
       </div>
 
       <div>
@@ -341,14 +295,9 @@ function renderServicesTab() {
       const totalPrice = mat.precio_unitario;
       detailsHtml += `
         <div style="padding: 12px; background: var(--concrete-50); border-left: 3px solid var(--yellow-500); border-radius: 6px;">
-          <div class="admin-flex-between">
-            <div>
-              <div style="font-weight: 700; color: var(--navy-900); margin-bottom: 6px;">${escapeHtml(mat.nombre)}</div>
-              <div style="font-size: 13px; color: var(--concrete-700);">
-                ${matQty.cantidad_por_m2} ${escapeHtml(mat.unidad)}/m² • $${totalPrice.toFixed(2)}/${escapeHtml(mat.unidad)}
-              </div>
-            </div>
-            <button onclick="removeMaterialFromService('${escapeHtml(currentServiceKey)}', '${escapeHtml(matKey)}')" class="admin-btn-danger">Quitar</button>
+          <div style="font-weight: 700; color: var(--navy-900); margin-bottom: 6px;">${escapeHtml(mat.nombre)}</div>
+          <div style="font-size: 13px; color: var(--concrete-700);">
+            ${matQty.cantidad_por_m2} ${escapeHtml(mat.unidad)}/m² • $${totalPrice.toFixed(2)}/${escapeHtml(mat.unidad)}
           </div>
         </div>
       `;
@@ -358,7 +307,6 @@ function renderServicesTab() {
 
   detailsHtml += `
       </div>
-      <button onclick="addMaterialToServiceModal('${escapeHtml(currentServiceKey)}')" class="admin-btn-primary w-full">+ Agregar Material</button>
     </div>
   `;
 
@@ -370,87 +318,6 @@ function selectService(key) {
   renderServicesTab();
 }
 
-function toggleMedible(key) {
-  servicios[key].medible = !servicios[key].medible;
-  saveMateriales();
-  renderServicesTab();
-}
-
-function addServiceModal() {
-  const nombre = prompt('Nombre del nuevo servicio:');
-  if (!nombre || nombre.trim() === '') return;
-
-  const key = nombre.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-
-  if (servicios[key]) {
-    alert('Este servicio ya existe');
-    return;
-  }
-
-  servicios[key] = {
-    nombre: nombre.trim(),
-    descripcion: '',
-    medible: true,
-    materiales: {}
-  };
-
-  saveMateriales();
-  currentServiceKey = key;
-  renderServicesTab();
-  alert('✓ Servicio creado');
-}
-
-function addMaterialToServiceModal(serviceKey) {
-  const service = servicios[serviceKey];
-
-  // Create list of available materials
-  let options = Object.entries(materiales)
-    .filter(([key]) => !service.materiales[key])
-    .map(([key, mat]) => `${key}|${mat.nombre}`)
-    .join('\n');
-
-  if (!options) {
-    alert('Todos los materiales ya están asignados a este servicio');
-    return;
-  }
-
-  const selected = prompt(`Selecciona un material para agregar:\n\n${options.split('\n').map(opt => opt.split('|')[1]).join('\n')}`);
-
-  if (!selected || selected.trim() === '') return;
-
-  // Find the selected material key
-  let selectedKey = null;
-  Object.entries(materiales).forEach(([key, mat]) => {
-    if (mat.nombre === selected && !service.materiales[key]) {
-      selectedKey = key;
-    }
-  });
-
-  if (!selectedKey) {
-    alert('Material no encontrado');
-    return;
-  }
-
-  const quantity = parseFloat(prompt(`Cantidad por m² de ${selected}:`));
-  if (isNaN(quantity) || quantity <= 0) {
-    alert('Error: ingresa una cantidad válida');
-    return;
-  }
-
-  service.materiales[selectedKey] = { cantidad_por_m2: quantity };
-  saveMateriales();
-  renderServicesTab();
-  alert('✓ Material agregado al servicio');
-}
-
-function removeMaterialFromService(serviceKey, materialKey) {
-  const mat = materiales[materialKey];
-  if (!confirm(`¿Remover "${mat.nombre}" de este servicio?`)) return;
-
-  delete servicios[serviceKey].materiales[materialKey];
-  saveMateriales();
-  renderServicesTab();
-}
 
 // ============ CALCULATOR TAB ============
 
