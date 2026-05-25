@@ -25,7 +25,8 @@
       "Bash(curl -v \"https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=0\")",
       "Bash(curl -L \"https://docs.google.com/spreadsheets/d/1vtvFaUgcWZpfyzPMAEc3o1KGU5QE_Pz6Uy4M3r4nJ_M/export?format=csv&gid=0\")",
       "Bash(rm -f /home/cvega/Documentos/Projects/RISA/test_*.js && git add -A && git commit -m \"chore: remove test files\")",
-      "Bash(npm exec *)"
+      "Bash(npm exec *)",
+      "Bash(rm -f /home/cvega/Documentos/Projects/RISA/test-*.js && git add -A && git commit -m \"chore: remove test files\")"
     ],
     "additionalDirectories": [
       "/tmp",
