@@ -79,13 +79,17 @@ async function queryGoogleSheet(sheetName, sheetGid) {
 
 async function loadMateriales() {
   try {
-    // Load materials from Google Sheets
-    const materialesData = await queryGoogleSheet('Materiales', 0);
+    // Load materials from Google Sheets using correct gid values
+    const GID_MATERIALES = 0;
+    const GID_SERVICIOS = 733707075;
+    const GID_SERVICIOS_MATERIALES = 1162823015;
+
+    const materialesData = await queryGoogleSheet('Materiales', GID_MATERIALES);
+    const serviciosData = await queryGoogleSheet('Servicios', GID_SERVICIOS);
+    const serviciosMaterialesData = await queryGoogleSheet('Servicios-Materiales', GID_SERVICIOS_MATERIALES);
 
     // Build materiales object
     materiales = {};
-
-    // Load from Google Sheets if available
     if (materialesData && materialesData.length > 0) {
       materialesData.forEach(mat => {
         const id = mat.id?.trim();
@@ -98,42 +102,11 @@ async function loadMateriales() {
         }
       });
       console.log('✓ Materiales loaded from Google Sheets');
-    } else {
-      // Fallback: use default materials
-      materiales = {
-        pega_azulejos: { nombre: 'Pega azulejos', unidad: 'sacos (20kg)', precio_unitario: 380 },
-        arena_fina: { nombre: 'Arena fina', unidad: 'm³', precio_unitario: 180 },
-        arena_gruesa: { nombre: 'Arena gruesa', unidad: 'm³', precio_unitario: 180 },
-        cemento_gris: { nombre: 'Cemento gris', unidad: 'sacos (25kg)', precio_unitario: 220 },
-        lechada: { nombre: 'Lechada / Grout', unidad: 'sacos (25kg)', precio_unitario: 420 },
-        grava: { nombre: 'Grava o piedra', unidad: 'm³', precio_unitario: 280 },
-        agua: { nombre: 'Agua', unidad: 'litros', precio_unitario: 10 },
-        pintura_latex: { nombre: 'Pintura látex', unidad: 'litros', precio_unitario: 800 },
-        thinner: { nombre: 'Thinner', unidad: 'litros', precio_unitario: 600 },
-        masilla_pintura: { nombre: 'Masilla / Resane', unidad: 'kg', precio_unitario: 200 },
-        lija: { nombre: 'Lija / Lija adhesiva', unidad: 'pliegos', precio_unitario: 50 },
-        placa_tablaroca: { nombre: 'Placa de tablaroca (1.22 x 2.44 m)', unidad: 'piezas', precio_unitario: 280 },
-        pegamento_tablaroca: { nombre: 'Pegamento para tablaroca', unidad: 'kg', precio_unitario: 150 },
-        tornillos_tablaroca: { nombre: 'Tornillos para tablaroca (1 1/4")', unidad: 'piezas', precio_unitario: 2 },
-        cinta_papel: { nombre: 'Cinta de papel para juntas', unidad: 'metros', precio_unitario: 15 },
-        masilla_juntas: { nombre: 'Masilla para juntas', unidad: 'kg', precio_unitario: 180 },
-        impermeabilizante: { nombre: 'Impermeabilizante líquido', unidad: 'litros', precio_unitario: 500 },
-        primer: { nombre: 'Primer / Sellador', unidad: 'litros', precio_unitario: 400 },
-        aditivo_impermeabilizante: { nombre: 'Aditivo impermeabilizante', unidad: 'sacos (25kg)', precio_unitario: 620 },
-        tela_asfaltica: { nombre: 'Tela asfáltica', unidad: 'm2', precio_unitario: 600 }
-      };
-      console.log('✓ Materiales loaded from fallback data');
     }
 
-    // Load servicios data
-    // Try to fetch from Google Sheets, fallback to hardcoded data if sheets don't exist
-    const serviciosData = await queryGoogleSheet('Servicios', 1);
-    const serviciosMaterialesData = await queryGoogleSheet('Servicios-Materiales', 2);
-
+    // Build servicios object
     servicios = {};
-
     if (serviciosData && serviciosData.length > 0) {
-      // Load from Google Sheets
       serviciosData.forEach(srv => {
         const id = srv.id?.trim();
         if (id) {
@@ -146,85 +119,20 @@ async function loadMateriales() {
         }
       });
 
-      serviciosMaterialesData.forEach(sm => {
-        const servId = sm.id_servicio?.trim();
-        const matId = sm.id_material?.trim();
-        const qty = parseFloat(sm.cantidad_por_m2) || 0;
+      if (serviciosMaterialesData && serviciosMaterialesData.length > 0) {
+        serviciosMaterialesData.forEach(sm => {
+          const servId = sm.id_servicio?.trim();
+          const matId = sm.id_material?.trim();
+          const qty = parseFloat(sm.cantidad_por_m2) || 0;
 
-        if (servicios[servId] && matId && qty > 0) {
-          servicios[servId].materiales[matId] = {
-            cantidad_por_m2: qty
-          };
-        }
-      });
+          if (servicios[servId] && matId && qty > 0) {
+            servicios[servId].materiales[matId] = {
+              cantidad_por_m2: qty
+            };
+          }
+        });
+      }
       console.log('✓ Servicios loaded from Google Sheets');
-    } else {
-      // Fallback to hardcoded servicios (when Google Sheets data not available)
-      servicios = {
-        vitropiso: {
-          nombre: 'Vitropiso / Azulejos',
-          descripcion: 'Colocación de azulejos y vitropiso',
-          medible: true,
-          materiales: {
-            pega_azulejos: { cantidad_por_m2: 0.075 },
-            arena_fina: { cantidad_por_m2: 0.0008 },
-            cemento_gris: { cantidad_por_m2: 0.02 },
-            lechada: { cantidad_por_m2: 0.012 }
-          }
-        },
-        cementado: {
-          nombre: 'Cementado / Piso de concreto',
-          descripcion: 'Preparación e instalación de pisos de cemento',
-          medible: true,
-          materiales: {
-            arena_gruesa: { cantidad_por_m2: 0.04 },
-            grava: { cantidad_por_m2: 0.06 },
-            cemento_gris: { cantidad_por_m2: 1.0 },
-            agua: { cantidad_por_m2: 20 }
-          }
-        },
-        pintura: {
-          nombre: 'Pintura residencial',
-          descripcion: 'Pintura de interiores y exteriores',
-          medible: true,
-          materiales: {
-            pintura_latex: { cantidad_por_m2: 0.12 },
-            thinner: { cantidad_por_m2: 0.02 },
-            masilla_pintura: { cantidad_por_m2: 0.1 },
-            lija: { cantidad_por_m2: 0.02 }
-          }
-        },
-        tablaroca: {
-          nombre: 'Instalación de Tablaroca',
-          descripcion: 'Muros, plafones y revestimientos',
-          medible: true,
-          materiales: {
-            placa_tablaroca: { cantidad_por_m2: 0.34 },
-            pegamento_tablaroca: { cantidad_por_m2: 0.5 },
-            tornillos_tablaroca: { cantidad_por_m2: 15 },
-            cinta_papel: { cantidad_por_m2: 1.5 },
-            masilla_juntas: { cantidad_por_m2: 1.2 }
-          }
-        },
-        impermeabilizacion: {
-          nombre: 'Impermeabilización',
-          descripcion: 'Impermeabilización de azoteas y techos',
-          medible: true,
-          materiales: {
-            impermeabilizante: { cantidad_por_m2: 1.2 },
-            primer: { cantidad_por_m2: 0.3 },
-            aditivo_impermeabilizante: { cantidad_por_m2: 0.008 },
-            tela_asfaltica: { cantidad_por_m2: 1.1 }
-          }
-        },
-        plomeria: {
-          nombre: 'Plomería',
-          descripcion: 'Instalación y reparación de tuberías',
-          medible: false,
-          materiales: {}
-        }
-      };
-      console.log('✓ Servicios loaded from fallback data');
     }
 
     console.log('✓ All data loaded successfully');
